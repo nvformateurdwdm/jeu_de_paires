@@ -39,6 +39,14 @@
 }
 
 .face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
     font-family: "Fruktur-Regular";
     font-weight: bold;
     font-size: 60px;
@@ -48,6 +56,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
+    height: 100%;
 }
 
 .arriere img {
@@ -55,20 +65,9 @@
     height: 100%;
 }
 
-.face, .arriere {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-}
 
-
-.carte:active {
-    background: white;
+.active {
+    transform: rotateY(180deg);
 }
 
 /* .image-1 {
