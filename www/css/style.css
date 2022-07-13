@@ -11,6 +11,18 @@
     display: flex;
 }
 
+.double-face {
+
+}
+
+.face {
+
+}
+
+.arriere {
+
+}
+
 .carte {
     width: 100px;
     height: 85px;
@@ -63,7 +75,7 @@
     color: #7BC9E1;
 }
 
-.carte:active.carte-A::before {
+/* .carte:active.carte-A::before {
     content: "A";
 }
 
@@ -165,4 +177,4 @@
 
 .carte:active.carte-Z::before {
     content: "Z";
-}
+} */
