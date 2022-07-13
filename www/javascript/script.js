@@ -12,6 +12,10 @@ const urlParams = new URLSearchParams(queryString);
 const isDebug = urlParams.get('debug');
 
 const Letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+const States = {
+    good: "&#x2705;" ,
+    wrong: "&#x274C;"
+};
 
 let debug = (window.location.protocol == "file:") || (window.location.hostname == "127.0.0.1") || (isDebug == "true");
 if (isDebug == "false") {
@@ -25,12 +29,12 @@ class AbstractButton {
     }
 
     disable(bool = true) {
-        buttonDiv.disabled = bool;
-        buttonDiv.className = bool ? "disabled" : "buttonNextPrevious";
+        this.buttonDiv.disabled = bool;
+        this.buttonDiv.className = bool ? "disabled" : "buttonNextPrevious";
         if (bool) {
-            buttonDiv.removeEventListener(EventNames.CLICK, buttonClickHandler);
+            this.buttonDiv.removeEventListener(EventNames.CLICK, buttonClickHandler);
         } else {
-            buttonDiv.addEventListener(EventNames.CLICK, buttonClickHandler);
+            this.buttonDiv.addEventListener(EventNames.CLICK, buttonClickHandler);
         }
     }
 
@@ -62,5 +66,14 @@ class Card extends AbstractButton {
 
     get back() {
         return buttonDiv.querySelector("arriere");
+    }
+}
+
+class PairGame extends AbstractGame {
+    constructor(){
+        super();
+
+        this.firstCard = firstCard;
+        this.secondCard = secondCard;
     }
 }
