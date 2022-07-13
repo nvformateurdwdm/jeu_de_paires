@@ -46,3 +46,21 @@ class AbstractGame {
         console.log("Initialisation du jeu");
     }
 }
+
+class Card extends AbstractButton {
+    constructor(buttonDiv) {
+        super(buttonDiv);
+    }
+
+    get letter() {
+        return buttonDiv.getAttribute("data-attr");
+    }
+
+    get face() {
+        return buttonDiv.querySelector("face");
+    }
+
+    get back() {
+        return buttonDiv.querySelector("arriere");
+    }
+}
