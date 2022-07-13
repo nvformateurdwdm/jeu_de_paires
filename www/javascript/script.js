@@ -25,12 +25,12 @@ class AbstractButton {
     }
 
     disable(bool = true) {
-        buttonDiv.disabled = bool;
-        buttonDiv.className = bool ? "disabled" : "buttonNextPrevious";
+        this.buttonDiv.disabled = bool;
+        this.buttonDiv.className = bool ? "disabled" : "buttonNextPrevious";
         if (bool) {
-            buttonDiv.removeEventListener(EventNames.CLICK, buttonClickHandler);
+            this.buttonDiv.removeEventListener(EventNames.CLICK, buttonClickHandler);
         } else {
-            buttonDiv.addEventListener(EventNames.CLICK, buttonClickHandler);
+            this.buttonDiv.addEventListener(EventNames.CLICK, buttonClickHandler);
         }
     }
 
