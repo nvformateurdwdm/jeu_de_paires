@@ -16,3 +16,23 @@ if (isDebug == "false") {
     debug = false;
 }
 console.log("debug", debug);
+
+class AbstractButton {
+    constructor(buttonDiv) {
+        this.buttonDiv = buttonDiv;
+    }
+
+    disable(bool = true) {
+        buttonDiv.disabled = bool;
+        buttonDiv.className = bool ? "disabled" : "buttonNextPrevious";
+        if (bool) {
+            buttonDiv.removeEventListener(EventNames.CLICK, buttonClickHandler);
+        } else {
+            buttonDiv.addEventListener(EventNames.CLICK, buttonClickHandler);
+        }
+    }
+
+    buttonClickHandler() {
+        console.log(this.buttonDiv);
+    }
+}
