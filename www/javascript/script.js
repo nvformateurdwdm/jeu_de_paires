@@ -46,3 +46,12 @@ class AbstractGame {
         console.log("Initialisation du jeu");
     }
 }
+
+class PairGame extends AbstractGame {
+    constructor(){
+        super();
+
+        this.firstCard = firstCard;
+        this.secondCard = secondCard;
+    }
+}
