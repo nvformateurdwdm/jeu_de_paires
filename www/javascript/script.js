@@ -16,3 +16,12 @@ if (isDebug == "false") {
     debug = false;
 }
 console.log("debug", debug);
+
+class AbstractGame {
+    constructor(){
+        console.log("Démarrage du jeu.");
+    }
+    init(datasource){
+        console.log("Insolation du jeu");
+    }
+}
