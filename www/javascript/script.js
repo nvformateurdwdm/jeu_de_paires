@@ -23,11 +23,39 @@ if (isDebug == "false") {
 }
 console.log("debug", debug);
 
+class AbstractButton {
+    constructor(buttonDiv) {
+        this.buttonDiv = buttonDiv;
+    }
+
+    disable(bool = true) {
+        this.buttonDiv.disabled = bool;
+        this.buttonDiv.className = bool ? "disabled" : "buttonNextPrevious";
+        if (bool) {
+            this.buttonDiv.removeEventListener(EventNames.CLICK, buttonClickHandler);
+        } else {
+            this.buttonDiv.addEventListener(EventNames.CLICK, buttonClickHandler);
+        }
+    }
+
+    buttonClickHandler() {
+        console.log(this.buttonDiv);
+    }
+}
 class AbstractGame {
     constructor(){
         console.log("Démarrage du jeu.");
     }
-    init(datasource){
-        console.log("Insolation du jeu");
+    init(dataSource){
+        console.log("Initialisation du jeu");
+    }
+}
+
+class PairGame extends AbstractGame {
+    constructor(){
+        super();
+
+        this.firstCard = firstCard;
+        this.secondCard = secondCard;
     }
 }
