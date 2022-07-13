@@ -23,7 +23,7 @@ class AbstractGame {
     constructor(){
         console.log("Démarrage du jeu.");
     }
-    init(datasource){
-        console.log("Insolation du jeu");
+    init(dataSource){
+        console.log("Initialisation du jeu");
     }
 }
