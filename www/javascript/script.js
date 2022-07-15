@@ -76,4 +76,10 @@ class PairGame extends AbstractGame {
         this.firstCard = firstCard;
         this.secondCard = secondCard;
     }
+
+    init(dataSource) {
+        initLines(dataSource);
+        initCards(dataSource);
+        cardClickHandler(card);
+    }
 }
