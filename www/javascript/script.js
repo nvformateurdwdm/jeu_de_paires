@@ -102,5 +102,14 @@ class PairGame extends AbstractGame {
 
     cardClickHandler(card) {
         
+        
+        if (locked) {
+            
+        }
+        else {
+            activate(flag);
+        }
+        rotate();
+        
     }
 }
