@@ -13,7 +13,7 @@ const isDebug = urlParams.get('debug');
 
 const Letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
 const States = {
-    good: "&#x2705;" ,
+    good: "&#x2705;",
     wrong: "&#x274C;"
 };
 
@@ -43,11 +43,11 @@ class AbstractButton {
     }
 }
 class AbstractGame {
-    constructor(){
+    constructor() {
         console.log("Démarrage du jeu.");
     }
-    
-    init(dataSource){
+
+    init(dataSource) {
         console.log("Initialisation du jeu");
     }
 }
@@ -69,18 +69,23 @@ class Card extends AbstractButton {
         return buttonDiv.querySelector("arriere");
     }
 
-    activate(flag){
+    activate(flag) {
 
+    }
+
+    rotate(){
+        
     }
 }
 
 class PairGame extends AbstractGame {
-    constructor(){
+    constructor() {
         super();
 
         this.firstCard = firstCard;
         this.secondCard = secondCard;
     }
+<<<<<<< HEAD
     initLines(dataSource){
            querySelector("ligne");
     };
@@ -92,21 +97,43 @@ class PairGame extends AbstractGame {
     // La méthode init charge les données dans la l'élément html contenu dans dataSource
     // elle appelle les méthodes d'initialisation
     // elle vérifie
+=======
+
+    initLines(dataSource) {
+
+    };
+
+    isCardsMatch() {
+        return this.firstCard.letter == this.secondCard.letter;
+    }
+ 
+    /**
+     * @description La méthode init charge les données dans la l'élément html contenu dans dataSource. Elle appelle les méthodes d'initialisation.
+     * @param {*} dataSource 
+     */
+>>>>>>> 26900efc6b4774347e181a6b9ec0b1f94012e9fe
     init(dataSource) {
         initLines(dataSource);
         initCards(dataSource);
         Letters.forEach(letter => {
-            couples = [];
+           let couples = [];
             if (cards.find(e => e == letter)) {
-                couples.push(card);
+                couples.push(e);
             }
+            allCouples.push(couples);
         });
-        allCouples.push(couple)
     }
 
-    checkCouple(){}
+    checkCouple() {}
 
     cardClickHandler(card) {
-        
+
+    }
+
+    flipCards(){
+
     }
 }
+
+const pairGame = new PairGame();
+// pairGame.init();
