@@ -114,7 +114,7 @@ class PairGame extends AbstractGame {
                 couples.push(card);
             }
         });
-        allCouples.push(couple)
+        allCouples.push(couple);
     }
 
     checkCouple() {
