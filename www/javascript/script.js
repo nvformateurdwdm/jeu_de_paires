@@ -76,4 +76,8 @@ class PairGame extends AbstractGame {
         this.firstCard = firstCard;
         this.secondCard = secondCard;
     }
+
+    isCardsMatch() {
+        return firstCard = secondCard;
+    }
 }
