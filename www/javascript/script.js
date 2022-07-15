@@ -67,6 +67,10 @@ class Card extends AbstractButton {
         return buttonDiv.getAttribute("data-attr");
     }
 
+    set setLetter(value) {
+        this.face.textContent = value;
+    }
+
     get face() {
         return buttonDiv.querySelector("face");
     }
@@ -99,6 +103,7 @@ class PairGame extends AbstractGame {
         this.firstCard = firstCard;
         this.secondCard = secondCard;
         this.line = [];
+        this.cards = [];
     }
 
     initLines(dataSource){
@@ -110,7 +115,11 @@ class PairGame extends AbstractGame {
     };
 
     initCards(dataSource){
-        
+        dataSource.querySelectorAll(".carte").forEach(cardDiv => {
+            const card = new Card(cardDiv);
+            this.cards.push(card);
+            card.setLetter = card.letter;
+        });
     }
 
     isCardsMatch() {
