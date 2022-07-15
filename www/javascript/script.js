@@ -87,6 +87,10 @@ class PairGame extends AbstractGame {
     // La méthode init charge les données dans la l'élément html contenu dans dataSource
     // elle appelle les méthodes d'initialisation
     // 
+    
+    // La méthode init charge les données dans la l'élément html contenu dans dataSource
+    // elle appelle les méthodes d'initialisation
+    // elle vérifie
     init(dataSource) {
         initLines(dataSource);
         initCards(dataSource);
@@ -106,7 +110,9 @@ class PairGame extends AbstractGame {
             locked = false;
             return flipCards();
         }
+        allCouples.push(couple)
     }
+
     checkCouple(){}
     cardClickHandler(card) {}
 }
