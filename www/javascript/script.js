@@ -13,7 +13,7 @@ const isDebug = urlParams.get('debug');
 
 const Letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
 const States = {
-    good: "&#x2705;" ,
+    good: "&#x2705;",
     wrong: "&#x274C;"
 };
 
@@ -43,10 +43,10 @@ class AbstractButton {
     }
 }
 class AbstractGame {
-    constructor(){
+    constructor() {
         console.log("Démarrage du jeu.");
     }
-    init(dataSource){
+    init(dataSource) {
         console.log("Initialisation du jeu");
     }
 }
@@ -74,7 +74,7 @@ class Card extends AbstractButton {
 }
 
 class PairGame extends AbstractGame {
-    constructor(){
+    constructor() {
         super();
 
         this.firstCard = firstCard;
@@ -97,6 +97,14 @@ class PairGame extends AbstractGame {
             }
         });
     }
-
-    checkCouple(){}
+    checkCouple() {
+        if (this.isCardsMatch() = true) {
+            locked = true;
+            Letters.splice(Letters.indexOf(this.firstCard), 1);
+            
+        } else {
+            locked = false;
+            return flipCards();
+        }
+    }
 }
