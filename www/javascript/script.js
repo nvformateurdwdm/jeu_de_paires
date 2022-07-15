@@ -82,12 +82,12 @@ class PairGame extends AbstractGame {
         this.secondCard = secondCard;
     }
     initLines(dataSource){
-
+           querySelector("ligne");
     };
 
     isCardsMatch() {
         return this.firstCard == this.secondCard;
-    }
+    }      
     
     // La méthode init charge les données dans la l'élément html contenu dans dataSource
     // elle appelle les méthodes d'initialisation
