@@ -87,12 +87,12 @@ class PairGame extends AbstractGame {
     
     // La méthode init charge les données dans la l'élément html contenu dans dataSource
     // elle appelle les méthodes d'initialisation
-    // elle vérifie
+    // elle vérifie 
     init(dataSource) {
         initLines(dataSource);
         initCards(dataSource);
         Letters.forEach(letter => {
-            couples = [];
+           let couples = [];
             if (cards.find(e => e == letter)) {
                 couples.push(card);
             }
