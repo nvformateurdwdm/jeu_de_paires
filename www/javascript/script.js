@@ -13,7 +13,7 @@ const isDebug = urlParams.get('debug');
 
 const Letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
 const States = {
-    good: "&#x2705;" ,
+    good: "&#x2705;",
     wrong: "&#x274C;"
 };
 
@@ -43,10 +43,11 @@ class AbstractButton {
     }
 }
 class AbstractGame {
-    constructor(){
+    constructor() {
         console.log("Démarrage du jeu.");
     }
-    init(dataSource){
+
+    init(dataSource) {
         console.log("Initialisation du jeu");
     }
 }
@@ -68,25 +69,56 @@ class Card extends AbstractButton {
         return buttonDiv.querySelector("arriere");
     }
 
-    activate(flag){
+    get doubleFace(){
+        return buttonDiv.querySelector("double-face");
+    }
+
+    activate(flag) {
+        if (flag) {
+            this.doubleFace.classList.toggle("active");
+        }else{
+            this.doubleFace.classList.remove("active");
+        }
+    }
+
+    rotate(){
 
     }
 }
 
 class PairGame extends AbstractGame {
-    constructor(){
+    constructor() {
         super();
 
         this.firstCard = firstCard;
         this.secondCard = secondCard;
     }
 
+    initLines(dataSource){
+           querySelector("ligne");
+    };
+
     isCardsMatch() {
-        return Card.letter;
-    }
+        return this.firstCard == this.secondCard;
+    }      
+    
     // La méthode init charge les données dans la l'élément html contenu dans dataSource
     // elle appelle les méthodes d'initialisation
-    // 
+    // elle vérifie
+
+
+    initLines(dataSource) {
+
+    };
+
+    isCardsMatch() {
+        return this.firstCard == this.secondCard;
+    }
+ 
+    /**
+     * @description La méthode init charge les données dans la l'élément html contenu dans dataSource. Elle appelle les méthodes d'initialisation.
+     * @param {*} dataSource 
+     */
     init(dataSource) {
         initLines(dataSource);
         initCards(dataSource);
@@ -96,9 +128,24 @@ class PairGame extends AbstractGame {
                 couples.push(card);
             }
         });
+        allCouples.push(couple);
     }
 
-    checkCouple(){}
+    checkCouple() {
+        this.locked = true;
+        if (this.isCardsMatch()) {
+            // .splice(.indexOf());
+        } else {
+            this.firstCard.activate(false);
+            this.secondCard.activate(false);
+            this.firstCard.disable(false);
+            this.secondCard.disable(false);
+            this.firstCard = null;
+            this.secondCard = null;
+            this.locked = false;
+        }
+
+    }
 
     cardClickHandler(card) {
         
@@ -112,4 +159,17 @@ class PairGame extends AbstractGame {
         rotate();
         
     }
+
+    flipCards(){
+
 }
+}
+
+var cardDiv = document.querySelectorAll(".carte")[1];
+console.log(cardDiv);
+const card = new Card(cardDiv);
+
+card.activate(true);
+
+const pairGame = new PairGame();
+// pairGame.init();
