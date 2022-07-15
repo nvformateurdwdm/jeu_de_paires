@@ -82,13 +82,22 @@ class PairGame extends AbstractGame {
     }
 
     isCardsMatch() {
-        return firstCard = secondCard;
+        return Card.letter;
     }
+    // La méthode init charge les données dans la l'élément html contenu dans dataSource
+    // elle appelle les méthodes d'initialisation
+    // 
     init(dataSource) {
         initLines(dataSource);
         initCards(dataSource);
-        cardClickHandler(card);
+        Letters.forEach(letter => {
+            couples = [];
+            if (cards.find(e => e == letter)) {
+                couples.push(card);
+            }
+        });
     }
+
     checkCouple(){}
 
     cardClickHandler(card) {
