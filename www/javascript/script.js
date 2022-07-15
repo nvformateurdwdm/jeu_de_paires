@@ -143,10 +143,8 @@ class PairGame extends AbstractGame {
 
     initCards(dataSource){
         dataSource.querySelectorAll(".carte").forEach(cardDiv => {
-            console.log(cardDiv);
-            
             const card = new Card(cardDiv);
-            card.addEventListener(CardEventsName.CLICK, function () {
+            card.addEventListener(CardEventsName.CARD_CLICK, function () {
                 this.cardClickHandler(card);
             }.bind(this));
             card.disable(false);
@@ -196,7 +194,7 @@ class PairGame extends AbstractGame {
     }
 
     cardClickHandler(card) {
-        console.log("card", card);
+        console.log("cardClickHandler", card);
         
         if (this.locked) {
             return;
