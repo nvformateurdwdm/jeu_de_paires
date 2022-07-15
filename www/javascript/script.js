@@ -67,6 +67,10 @@ class Card extends AbstractButton {
     get back() {
         return buttonDiv.querySelector("arriere");
     }
+
+    activate(flag){
+
+    }
 }
 
 class PairGame extends AbstractGame {
@@ -80,10 +84,19 @@ class PairGame extends AbstractGame {
     isCardsMatch() {
         return firstCard = secondCard;
     }
+    // La méthode init charge les données dans la l'élément html contenu dans dataSource
+    // elle appelle les méthodes d'initialisation
+    // 
     init(dataSource) {
         initLines(dataSource);
         initCards(dataSource);
-        cardClickHandler(card);
+        Letters.forEach(letter => {
+            couples = [];
+            if (cards.find(e => e == letter)) {
+                couples.push(card);
+            }
+        });
     }
+
     checkCouple(){}
 }
