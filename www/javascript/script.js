@@ -97,6 +97,6 @@ class PairGame extends AbstractGame {
             }
         });
     }
-    
+
     checkCouple(){}
 }
