@@ -68,7 +68,7 @@ class Card extends AbstractButton {
         return buttonDiv.querySelector("arriere");
     }
 
-    activate(flag){
+    activate(flag) {
 
     }
 }
@@ -87,7 +87,7 @@ class PairGame extends AbstractGame {
     // La méthode init charge les données dans la l'élément html contenu dans dataSource
     // elle appelle les méthodes d'initialisation
     // 
-    
+
     // La méthode init charge les données dans la l'élément html contenu dans dataSource
     // elle appelle les méthodes d'initialisation
     // elle vérifie
@@ -105,7 +105,7 @@ class PairGame extends AbstractGame {
         if (this.isCardsMatch() = true) {
             locked = true;
             Letters.splice(Letters.indexOf(this.firstCard), 1);
-            
+
         } else {
             locked = false;
             return flipCards();
@@ -113,6 +113,5 @@ class PairGame extends AbstractGame {
         allCouples.push(couple)
     }
 
-    checkCouple(){}
     cardClickHandler(card) {}
 }
