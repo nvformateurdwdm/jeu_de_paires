@@ -46,6 +46,7 @@ class AbstractGame {
     constructor() {
         console.log("Démarrage du jeu.");
     }
+
     init(dataSource) {
         console.log("Initialisation du jeu");
     }
@@ -80,13 +81,13 @@ class PairGame extends AbstractGame {
         this.firstCard = firstCard;
         this.secondCard = secondCard;
     }
+    initLines(dataSource) {
+
+    };
 
     isCardsMatch() {
-        return Card.letter;
+        return this.firstCard == this.secondCard;
     }
-    // La méthode init charge les données dans la l'élément html contenu dans dataSource
-    // elle appelle les méthodes d'initialisation
-    // 
 
     // La méthode init charge les données dans la l'élément html contenu dans dataSource
     // elle appelle les méthodes d'initialisation
@@ -100,18 +101,12 @@ class PairGame extends AbstractGame {
                 couples.push(card);
             }
         });
-    }
-    checkCouple() {
-        if (this.isCardsMatch() = true) {
-            locked = true;
-            Letters.splice(Letters.indexOf(this.firstCard), 1);
-
-        } else {
-            locked = false;
-            return flipCards();
-        }
         allCouples.push(couple)
     }
 
-    cardClickHandler(card) {}
+    checkCouple() {}
+
+    cardClickHandler(card) {
+
+    }
 }
