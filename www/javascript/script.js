@@ -104,7 +104,21 @@ class PairGame extends AbstractGame {
         allCouples.push(couple)
     }
 
-    checkCouple() {}
+    checkCouple() {
+        this.locked = true;
+        if (this.isCardsMatch()) {
+            // .splice(.indexOf());
+        } else {
+            this.firstCard.activate(false);
+            this.secondCard.activate(false);
+            this.firstCard.disable(false);
+            this.secondCard.disable(false);
+            this.firstCard = null;
+            this.secondCard = null;
+            this.locked = false;
+        }
+
+    }
 
     cardClickHandler(card) {
 
