@@ -90,7 +90,7 @@ class PairGame extends AbstractGame {
     };
 
     isCardsMatch() {
-        return this.firstCard == this.secondCard;
+        return this.firstCard.letter() == this.secondCard.letter();
     }
 
     // La méthode init charge les données dans la l'élément html contenu dans dataSource
