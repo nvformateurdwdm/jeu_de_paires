@@ -90,4 +90,8 @@ class PairGame extends AbstractGame {
         cardClickHandler(card);
     }
     checkCouple(){}
+
+    cardClickHandler(card) {
+        
+    }
 }
