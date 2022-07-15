@@ -93,6 +93,7 @@ class PairGame extends AbstractGame {
         this.firstCard = firstCard;
         this.secondCard = secondCard;
     }
+
     initLines(dataSource) {
 
     };
@@ -116,7 +117,21 @@ class PairGame extends AbstractGame {
         allCouples.push(couple)
     }
 
-    checkCouple() {}
+    checkCouple() {
+        this.locked = true;
+        if (this.isCardsMatch()) {
+            // .splice(.indexOf());
+        } else {
+            this.firstCard.activate(false);
+            this.secondCard.activate(false);
+            this.firstCard.disable(false);
+            this.secondCard.disable(false);
+            this.firstCard = null;
+            this.secondCard = null;
+            this.locked = false;
+        }
+
+    }
 
     cardClickHandler(card) {
         
@@ -132,3 +147,6 @@ console.log(cardDiv);
 const card = new Card(cardDiv);
 
 card.activate(true);
+
+const pairGame = new PairGame();
+// pairGame.init();
