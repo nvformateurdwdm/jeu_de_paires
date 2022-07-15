@@ -52,6 +52,12 @@ class AbstractGame {
     }
 }
 
+class Line{
+    constructor(dataSource){
+        this.dataSource = dataSource;
+    }
+}
+
 class Card extends AbstractButton {
     constructor(buttonDiv) {
         super(buttonDiv);
@@ -92,24 +98,20 @@ class PairGame extends AbstractGame {
 
         this.firstCard = firstCard;
         this.secondCard = secondCard;
+        this.line = [];
     }
 
     initLines(dataSource){
-           querySelector("ligne");
-    };
-
-    isCardsMatch() {
-        return this.firstCard == this.secondCard;
-    }      
-    
-    // La méthode init charge les données dans la l'élément html contenu dans dataSource
-    // elle appelle les méthodes d'initialisation
-    // elle vérifie
-
-
-    initLines(dataSource) {
+        for (const lineDiv of dataSource.querySelectorAll(".ligne")) {
+            const line = new Line(lineDiv);
+            this.line.push(line);
+        }
 
     };
+
+    initCards(dataSource){
+        
+    }
 
     isCardsMatch() {
         return this.firstCard == this.secondCard;
@@ -132,6 +134,9 @@ class PairGame extends AbstractGame {
         allCouples.push(couples);
     }
 
+    /**
+     * @description Check the cards when 2 cards are clicked.
+     */
     checkCouple() {
         this.locked = true;
         if (this.isCardsMatch()) {
@@ -149,21 +154,25 @@ class PairGame extends AbstractGame {
     }
 
     cardClickHandler(card) {
-        
-        
-        if (locked) {
-            
+        if (this.locked) {
+            return;
         }
-        else {
-            activate(flag);
+        card.activate(true);
+        if(!this.firstCard){
+            this.firstCard = card;
+            this.firstCard.disable(true);
+        }else{
+            this.secondCard = card;
+            this.secondCard.disable(true);
         }
-        rotate();
-        
+        if(this.firstCard && this.secondCard){
+            this.checkCouple();
+        }
     }
 
     flipCards(){
 
-}
+    }
 }
 
 var cardDiv = document.querySelectorAll(".carte")[1];
