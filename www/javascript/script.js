@@ -85,6 +85,7 @@ class PairGame extends AbstractGame {
         this.firstCard = firstCard;
         this.secondCard = secondCard;
     }
+
     initLines(dataSource) {
 
     };
@@ -93,9 +94,10 @@ class PairGame extends AbstractGame {
         return this.firstCard == this.secondCard;
     }
 
-    // La méthode init charge les données dans la l'élément html contenu dans dataSource
-    // elle appelle les méthodes d'initialisation
-    // elle vérifie
+    /**
+     * @description La méthode init charge les données dans la l'élément html contenu dans dataSource. Elle appelle les méthodes d'initialisation.
+     * @param {*} dataSource 
+     */
     init(dataSource) {
         initLines(dataSource);
         initCards(dataSource);
@@ -118,3 +120,6 @@ class PairGame extends AbstractGame {
 
     }
 }
+
+const pairGame = new PairGame();
+// pairGame.init();
