@@ -70,6 +70,10 @@ class Card extends AbstractButton {
     get back() {
         return buttonDiv.querySelector("arriere");
     }
+
+    activate(flag){
+
+    }
 }
 
 class PairGame extends AbstractGame {
@@ -79,6 +83,35 @@ class PairGame extends AbstractGame {
         this.firstCard = firstCard;
         this.secondCard = secondCard;
     }
+<<<<<<< HEAD
 }
 
 
+=======
+
+    isCardsMatch() {
+        return this.firstCard == this.secondCard;
+    }
+    
+    // La méthode init charge les données dans la l'élément html contenu dans dataSource
+    // elle appelle les méthodes d'initialisation
+    // elle vérifie
+    init(dataSource) {
+        initLines(dataSource);
+        initCards(dataSource);
+        Letters.forEach(letter => {
+            couples = [];
+            if (cards.find(e => e == letter)) {
+                couples.push(card);
+            }
+        });
+        allCouples.push(couple)
+    }
+
+    checkCouple(){}
+
+    cardClickHandler(card) {
+        
+    }
+}
+>>>>>>> 58739c6f2e3900bd0632f2fef5a068e471361d2d
