@@ -72,6 +72,10 @@ class Card extends AbstractButton {
     activate(flag){
 
     }
+
+    rotate(){
+        
+    }
 }
 
 class PairGame extends AbstractGame {
@@ -108,5 +112,9 @@ class PairGame extends AbstractGame {
 
     cardClickHandler(card) {
         
+    }
+
+    flipCards(){
+
     }
 }
