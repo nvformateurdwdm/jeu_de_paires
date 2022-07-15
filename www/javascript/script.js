@@ -82,4 +82,5 @@ class PairGame extends AbstractGame {
         initCards(dataSource);
         cardClickHandler(card);
     }
+    checkCouple(){}
 }
