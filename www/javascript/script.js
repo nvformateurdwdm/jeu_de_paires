@@ -13,7 +13,7 @@ const isDebug = urlParams.get('debug');
 
 const Letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
 const States = {
-    good: "&#x2705;" ,
+    good: "&#x2705;",
     wrong: "&#x274C;"
 };
 
@@ -43,11 +43,11 @@ class AbstractButton {
     }
 }
 class AbstractGame {
-    constructor(){
+    constructor() {
         console.log("Démarrage du jeu.");
     }
-    
-    init(dataSource){
+
+    init(dataSource) {
         console.log("Initialisation du jeu");
     }
 }
@@ -69,7 +69,7 @@ class Card extends AbstractButton {
         return buttonDiv.querySelector("arriere");
     }
 
-    activate(flag){
+    activate(flag) {
 
     }
 
@@ -79,20 +79,20 @@ class Card extends AbstractButton {
 }
 
 class PairGame extends AbstractGame {
-    constructor(){
+    constructor() {
         super();
 
         this.firstCard = firstCard;
         this.secondCard = secondCard;
     }
-    initLines(dataSource){
+    initLines(dataSource) {
 
     };
 
     isCardsMatch() {
         return this.firstCard == this.secondCard;
     }
-    
+
     // La méthode init charge les données dans la l'élément html contenu dans dataSource
     // elle appelle les méthodes d'initialisation
     // elle vérifie
@@ -108,10 +108,10 @@ class PairGame extends AbstractGame {
         allCouples.push(couple)
     }
 
-    checkCouple(){}
+    checkCouple() {}
 
     cardClickHandler(card) {
-        
+
     }
 
     flipCards(){
