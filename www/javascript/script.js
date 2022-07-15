@@ -84,9 +84,10 @@ class PairGame extends AbstractGame {
     isCardsMatch() {
         return firstCard = secondCard;
     }
+    
     // La méthode init charge les données dans la l'élément html contenu dans dataSource
     // elle appelle les méthodes d'initialisation
-    // 
+    // elle vérifie
     init(dataSource) {
         initLines(dataSource);
         initCards(dataSource);
@@ -96,6 +97,7 @@ class PairGame extends AbstractGame {
                 couples.push(card);
             }
         });
+        allCouples.push(couple)
     }
 
     checkCouple(){}
