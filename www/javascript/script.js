@@ -46,6 +46,9 @@ class AbstractGame {
     constructor(){
         console.log("Démarrage du jeu.");
     }
+    initLines(dataSource){
+
+    };
     init(dataSource){
         console.log("Initialisation du jeu");
     }
@@ -77,3 +80,5 @@ class PairGame extends AbstractGame {
         this.secondCard = secondCard;
     }
 }
+
+
