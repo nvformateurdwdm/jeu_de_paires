@@ -80,4 +80,14 @@ class PairGame extends AbstractGame {
         this.firstCard = firstCard;
         this.secondCard = secondCard;
     }
+
+    isCardsMatch() {
+        return firstCard = secondCard;
+    }
+    init(dataSource) {
+        initLines(dataSource);
+        initCards(dataSource);
+        cardClickHandler(card);
+    }
+    checkCouple(){}
 }
