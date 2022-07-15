@@ -72,6 +72,10 @@ class Card extends AbstractButton {
     activate(flag) {
 
     }
+
+    rotate(){
+        
+    }
 }
 
 class PairGame extends AbstractGame {
@@ -81,27 +85,29 @@ class PairGame extends AbstractGame {
         this.firstCard = firstCard;
         this.secondCard = secondCard;
     }
+
     initLines(dataSource) {
 
     };
 
     isCardsMatch() {
-        return this.firstCard == this.secondCard;
+        return this.firstCard.letter == this.secondCard.letter;
     }
-
-    // La méthode init charge les données dans la l'élément html contenu dans dataSource
-    // elle appelle les méthodes d'initialisation
-    // elle vérifie
+ 
+    /**
+     * @description La méthode init charge les données dans la l'élément html contenu dans dataSource. Elle appelle les méthodes d'initialisation.
+     * @param {*} dataSource 
+     */
     init(dataSource) {
         initLines(dataSource);
         initCards(dataSource);
         Letters.forEach(letter => {
-            couples = [];
+           let couples = [];
             if (cards.find(e => e == letter)) {
-                couples.push(card);
+                couples.push(e);
             }
+            allCouples.push(couples);
         });
-        allCouples.push(couple)
     }
 
     checkCouple() {
@@ -123,4 +129,11 @@ class PairGame extends AbstractGame {
     cardClickHandler(card) {
 
     }
+
+    flipCards(){
+
+    }
 }
+
+const pairGame = new PairGame();
+// pairGame.init();
