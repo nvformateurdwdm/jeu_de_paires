@@ -69,12 +69,20 @@ class Card extends AbstractButton {
         return buttonDiv.querySelector("arriere");
     }
 
-    activate(flag) {
+    get doubleFace(){
+        return buttonDiv.querySelector("double-face");
+    }
 
+    activate(flag) {
+        if (flag) {
+            this.doubleFace.classList.toggle("active");
+        }else{
+            this.doubleFace.classList.remove("active");
+        }
     }
 
     rotate(){
-        
+
     }
 }
 
@@ -90,32 +98,37 @@ class PairGame extends AbstractGame {
     };
 
     isCardsMatch() {
-        return this.firstCard.letter == this.secondCard.letter;
+        return this.firstCard == this.secondCard;
     }
- 
-    /**
-     * @description La méthode init charge les données dans la l'élément html contenu dans dataSource. Elle appelle les méthodes d'initialisation.
-     * @param {*} dataSource 
-     */
+
+    // La méthode init charge les données dans la l'élément html contenu dans dataSource
+    // elle appelle les méthodes d'initialisation
+    // elle vérifie
     init(dataSource) {
         initLines(dataSource);
         initCards(dataSource);
         Letters.forEach(letter => {
-           let couples = [];
+            couples = [];
             if (cards.find(e => e == letter)) {
-                couples.push(e);
+                couples.push(card);
             }
-            allCouples.push(couples);
         });
+        allCouples.push(couple)
     }
 
     checkCouple() {}
 
     cardClickHandler(card) {
-
+        
     }
 
     flipCards(){
 
-    }
 }
+}
+
+var cardDiv = document.querySelectorAll(".carte")[1];
+console.log(cardDiv);
+const card = new Card(cardDiv);
+
+card.activate(true);
