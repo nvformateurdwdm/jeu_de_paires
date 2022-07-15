@@ -68,7 +68,7 @@ class Card extends AbstractButton {
         return buttonDiv.querySelector("arriere");
     }
 
-    activate(flag){
+    activate(flag) {
 
     }
 }
