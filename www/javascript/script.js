@@ -90,7 +90,7 @@ class PairGame extends AbstractGame {
     };
 
     isCardsMatch() {
-        return this.firstCard.letter() == this.secondCard.letter();
+        return this.firstCard.letter == this.secondCard.letter;
     }
  
     /**
