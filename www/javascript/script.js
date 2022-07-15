@@ -91,9 +91,9 @@ class PairGame extends AbstractGame {
     };
 
     isCardsMatch() {
-        return this.firstCard == this.secondCard;
+        return this.firstCard.letter == this.secondCard.letter;
     }
-
+ 
     /**
      * @description La méthode init charge les données dans la l'élément html contenu dans dataSource. Elle appelle les méthodes d'initialisation.
      * @param {*} dataSource 
@@ -102,12 +102,12 @@ class PairGame extends AbstractGame {
         initLines(dataSource);
         initCards(dataSource);
         Letters.forEach(letter => {
-            couples = [];
+           let couples = [];
             if (cards.find(e => e == letter)) {
-                couples.push(card);
+                couples.push(e);
             }
+            allCouples.push(couples);
         });
-        allCouples.push(couple)
     }
 
     checkCouple() {}
