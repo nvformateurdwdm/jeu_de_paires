@@ -67,6 +67,10 @@ class Card extends AbstractButton {
     get back() {
         return buttonDiv.querySelector("arriere");
     }
+
+    activate(flag){
+
+    }
 }
 
 class PairGame extends AbstractGame {
