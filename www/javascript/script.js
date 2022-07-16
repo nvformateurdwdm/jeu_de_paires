@@ -89,20 +89,20 @@ class Card extends AbstractButton {
         return this.buttonDiv.getAttribute("data-attr");
     }
 
-    set setLetter(value) {
+    set letter(value) {
         this.face.textContent = value;
     }
 
     get face() {
-        return this.buttonDiv.querySelector("face");
+        return this.buttonDiv.querySelector(".face");
     }
 
     get back() {
-        return this.buttonDiv.querySelector("arriere");
+        return this.buttonDiv.querySelector(".arriere");
     }
 
     get doubleFace(){
-        return this.buttonDiv.querySelector("double-face");
+        return this.buttonDiv.querySelector(".double-face");
     }
 
     activate(flag) {
@@ -148,8 +148,8 @@ class PairGame extends AbstractGame {
                 this.cardClickHandler(card);
             }.bind(this));
             card.disable(false);
+            card.letter = card.letter;
             this.cards.push(card);
-            // card.setLetter = card.letter;
         });
     }
 
@@ -168,7 +168,7 @@ class PairGame extends AbstractGame {
         Letters.forEach(letter => {
             let couples = [];
             if (this.cards.find(e => e == letter)) {
-                this.couples.push(letter);
+                couples.push(letter);
             }
             this.allCouples.push(couples);
         });
