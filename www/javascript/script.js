@@ -1,19 +1,13 @@
-
-
 const Letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
 
 const states = {
-    good: "&#x2705;",
-    wrong: "&#x274C;"
+    GOOD: "&#x2705;",
+    WRONG: "&#x274C;"
 };
 
 const Delays = {
     FLIP: 1500
 };
-
-
-
-
 
 class Line {
     constructor(dataSource) {
@@ -255,14 +249,12 @@ class PairGame extends AbstractGame {
 
 function refreshRemainingCouples() {
     const couplesDiv = document.querySelector("#couples");
-    couplesDiv.textContent = "Nombre de couples restant : " + pairGame.remainingCouples;
-    console.log(pairGame.remainingCouples);
-
+    couplesDiv.textContent = "Nombre de couples restant : " + pairGame.remainingCouples + ".";
 }
 
 function refreshNbPoints(){
     const nbPointsDiv = document.querySelector("#nbPoints");
-    nbPointsDiv.textContent = "Nombre de points : " + pairGame.points;
+    nbPointsDiv.textContent = "Nombre de points : " + pairGame.points + ".";
 }
 
 function pairGameWinHandler(evt) {
@@ -274,7 +266,7 @@ function pairGameWinHandler(evt) {
 function pairGameGoodWrongHandler(evt) {
     console.log("pairGameGoodWrongHandler", evt);
     const stateDiv = document.querySelector("#state");
-    stateDiv.innerHTML = evt.type == PairGameEventNames.GOOD ? states.good : states.wrong;
+    stateDiv.innerHTML = evt.type == PairGameEventNames.GOOD ? states.GOOD : states.WRONG;
     console.log("evt.type", evt.type);
     if (evt.type == PairGameEventNames.GOOD) {
         refreshRemainingCouples();
@@ -282,10 +274,9 @@ function pairGameGoodWrongHandler(evt) {
 }
 
 function pairGameInitHandler(evt) {
-    refreshRemainingCouples();
     const stateDiv = document.querySelector("#state");
     stateDiv.innerHTML = '';
-
+    refreshRemainingCouples();
     refreshNbPoints();
 }
 
