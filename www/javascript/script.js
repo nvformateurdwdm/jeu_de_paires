@@ -240,8 +240,8 @@ class PairGame extends AbstractGame {
                 if (first.letter == this.firstCard.letter) {
                     this.allCouples.splice(this.allCouples.indexOf(couple), 1);
                     console.log("Longeur du tableau allCouples", this.allCouples.length);
-                    break;
                 }
+                break;
             }
             if (this.allCouples.length == 0) {
                 console.log("Partie terminée");
