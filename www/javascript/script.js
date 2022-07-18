@@ -12,14 +12,9 @@ const urlParams = new URLSearchParams(queryString);
 const isDebug = urlParams.get('debug');
 
 const Letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
-
 const States = {
     good: "&#x2705;",
     wrong: "&#x274C;"
-};
-
-const Delays = {
-    FLIP: 1500
 };
 
 let debug = (window.location.protocol == "file:") || (window.location.hostname == "127.0.0.1") || (isDebug == "true");
@@ -168,13 +163,21 @@ class PairGame extends AbstractGame {
      * @param {*} dataSource 
      */
     init(dataSource) {
+        // console.warn("TOTO",dataSource);
         this.initCards(dataSource);
         this.initLines(dataSource);
+        console.log("ALEX", this.cards);
+        
         Letters.forEach(letter => {
             let couples = [];
-            if (this.cards.find(e => e == letter)) {
-                couples.push(letter);
-            }
+            // this.cards.forEach(card => {
+
+            // });
+
+            // if (this.cards.find(e => e == letter)) {
+            //     couples.push();
+            //     console.log();
+            // }
             this.allCouples.push(couples);
         });
     }
@@ -203,15 +206,13 @@ class PairGame extends AbstractGame {
             this.secondCard = null;
             this.locked = false;
         } else {
-            setTimeout(() => {
-                this.firstCard.activate(false);
-                this.secondCard.activate(false);
-                this.firstCard.disable(false);
-                this.secondCard.disable(false);
-                this.firstCard = null;
-                this.secondCard = null;
-                this.locked = false;
-            }, Delays.FLIP);
+            this.firstCard.activate(false);
+            this.secondCard.activate(false);
+            this.firstCard.disable(false);
+            this.secondCard.disable(false);
+            this.firstCard = null;
+            this.secondCard = null;
+            this.locked = false;
         }
 
     }
