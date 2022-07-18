@@ -245,7 +245,12 @@ class PairGame extends AbstractGame {
             }
             if (this.allCouples.length == 0) {
                 console.log("Partie terminée");
-            }
+
+                this.dispatchEvent(newDispatchEvent(newDispatchEventNames.WIN));
+            }  else {
+                    console.log("WIN");
+            }  
+
             this.firstCard = null;
             this.secondCard = null;
             this.locked = false;
@@ -304,6 +309,13 @@ class PairGame extends AbstractGame {
 
 // card.activate(true);
 
+
+function pairGameWinHandler(evt){
+    console.log("pairGameWinHandler", evt);
+   
+}
+
+
 function pairGameGoodWrongHandler(evt){
     console.log("pairGameGoodWrongHandler", evt);
     if(evt.type == PairGameEventNames.GOOD){
@@ -314,4 +326,6 @@ function pairGameGoodWrongHandler(evt){
 const pairGame = new PairGame();
 pairGame.addEventListener(PairGameEventNames.GOOD, pairGameGoodWrongHandler);
 pairGame.addEventListener(PairGameEventNames.WRONG, pairGameGoodWrongHandler);
+pairGame.addEventListener(PairGameEventNames.WIN, pairGameWinHandler);
 pairGame.init(document);
+
