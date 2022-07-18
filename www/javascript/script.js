@@ -156,8 +156,8 @@ const PairGameEventNames = {
     FLIP: "flip"
 };
 
-class PairGameEvent extends AbstractGameEvent{
-    constructor(type){
+class PairGameEvent extends AbstractGameEvent {
+    constructor(type) {
         super(type);
     }
 }
@@ -173,7 +173,7 @@ class PairGame extends AbstractGame {
         this.allCouples = [];
     }
 
-    get remainingCouples(){
+    get remainingCouples() {
         return this.allCouples.length;
     }
 
@@ -193,7 +193,7 @@ class PairGame extends AbstractGame {
             card.disable(false);
             card.letter = card.letter;
 
-            if(debug){
+            if (debug) {
                 card.back.textContent = card.letter;
                 // console.log("tetet", card.back.textContent);
             }
@@ -221,7 +221,7 @@ class PairGame extends AbstractGame {
             let couples = [];
 
             for (const card of this.cards) {
-                if(card.letter == letter){
+                if (card.letter == letter) {
                     card.rotate();
                     couples.push(card);
                 }
@@ -270,17 +270,19 @@ class PairGame extends AbstractGame {
             this.dispatchEvent(new PairGameEvent(PairGameEventNames.GOOD));
         } else {
             console.log("WRONG");
-            
+
             this.dispatchEvent(new PairGameEvent(PairGameEventNames.WRONG));
             setTimeout(() => {
-                this.firstCard.activate(false);
-                this.secondCard.activate(false);
-                this.firstCard.disable(false);
-                this.secondCard.disable(false);
-                this.firstCard = null;
-                this.secondCard = null;
-                this.locked = false;
-            }, Delays.FLIP);
+                    this.firstCard.activate(false);
+                    this.secondCard.activate(false);
+                    this.firstCard.disable(false);
+                    this.secondCard.disable(false);
+                    this.firstCard = null;
+                    this.secondCard = null;
+                    this.locked = false;
+                },
+                Delays.FLIP);
+            this.dispatchEvent(new CardEvent(CardEventNames.CARD_CLICK));
         }
 
     }
@@ -327,8 +329,7 @@ function pairGameWinHandler(evt){
    
 }
 
-
-function pairGameGoodWrongHandler(evt){
+function pairGameGoodWrongHandler(evt) {
     console.log("pairGameGoodWrongHandler", evt);
     const stateDiv = document.querySelector("#state");
     stateDiv.innerHTML = evt.type == PairGameEventNames.GOOD ? states.good : states.wrong;
