@@ -23,8 +23,8 @@ if (isDebug == "false") {
 }
 console.log("debug", debug);
 
-class AbstractButton extends EventTarget{
-    constructor(buttonDiv){
+class AbstractButton extends EventTarget {
+    constructor(buttonDiv) {
         super();
 
         this.buttonDiv = buttonDiv;
@@ -48,10 +48,10 @@ class AbstractButton extends EventTarget{
         }
     }
 
-    buttonClickHandler(){
+    buttonClickHandler() {
         console.log("AbstractButton clicked.", this);
     }
-    
+
 };
 class AbstractGame {
     constructor() {
@@ -63,8 +63,8 @@ class AbstractGame {
     }
 }
 
-class Line{
-    constructor(dataSource){
+class Line {
+    constructor(dataSource) {
         this.dataSource = dataSource;
     }
 }
@@ -74,8 +74,8 @@ const CardEventsName = {
     // etc
 };
 
-class CardEvent extends CustomEvent{
-    constructor(type){
+class CardEvent extends CustomEvent {
+    constructor(type) {
         super(type);
     }
 }
@@ -100,24 +100,24 @@ class Card extends AbstractButton {
     get back() {
         return this.buttonDiv.querySelector(".arriere");
     }
-    
-    get doubleFace(){
+
+    get doubleFace() {
         return this.buttonDiv.querySelector(".double-face");
     }
 
     activate(flag) {
         if (flag) {
             this.doubleFace.classList.toggle("active");
-        }else{
+        } else {
             this.doubleFace.classList.remove("active");
         }
     }
 
-    rotate(){
+    rotate() {
 
     }
 
-    buttonClickHandler(evt){
+    buttonClickHandler(evt) {
         super.buttonClickHandler(evt);
         this.dispatchEvent(new CardEvent(CardEventsName.CARD_CLICK));
     }
@@ -134,14 +134,14 @@ class PairGame extends AbstractGame {
         this.allCouples = [];
     }
 
-    initLines(dataSource){
+    initLines(dataSource) {
         for (const lineDiv of dataSource.querySelectorAll(".ligne")) {
             const line = new Line(lineDiv);
             this.line.push(line);
         }
     };
 
-    initCards(dataSource){
+    initCards(dataSource) {
         dataSource.querySelectorAll(".carte").forEach(cardDiv => {
             const card = new Card(cardDiv);
             card.addEventListener(CardEventsName.CARD_CLICK, function () {
@@ -157,19 +157,27 @@ class PairGame extends AbstractGame {
         return this.firstCard.letter == this.secondCard.letter;
     }
 
-    
+
     /**
      * @description La méthode init charge les données dans la l'élément html contenu dans dataSource. Elle appelle les méthodes d'initialisation
      * @param {*} dataSource 
      */
     init(dataSource) {
+        // console.warn("TOTO",dataSource);
         this.initCards(dataSource);
         this.initLines(dataSource);
+        console.log("ALEX", this.cards);
+        
         Letters.forEach(letter => {
             let couples = [];
-            if (this.cards.find(e => e == letter)) {
-                couples.push(letter);
-            }
+            // this.cards.forEach(card => {
+
+            // });
+
+            // if (this.cards.find(e => e == letter)) {
+            //     couples.push();
+            //     console.log();
+            // }
             this.allCouples.push(couples);
         });
     }
@@ -195,24 +203,24 @@ class PairGame extends AbstractGame {
 
     cardClickHandler(card) {
         console.log("cardClickHandler", card);
-        
+
         if (this.locked) {
             return;
         }
         card.activate(true);
-        if(!this.firstCard){
+        if (!this.firstCard) {
             this.firstCard = card;
             this.firstCard.disable(true);
-        }else{
+        } else {
             this.secondCard = card;
             this.secondCard.disable(true);
         }
-        if(this.firstCard && this.secondCard){
+        if (this.firstCard && this.secondCard) {
             this.checkCouple();
         }
     }
 
-    flipCards(){
+    flipCards() {
 
     }
 }
