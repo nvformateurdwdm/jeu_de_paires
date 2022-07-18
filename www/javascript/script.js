@@ -67,7 +67,7 @@ class Card extends AbstractButton {
         return buttonDiv.getAttribute("data-attr");
     }
 
-    set setLetter(value) {
+    set letter(value) {
         this.face.textContent = value;
     }
 
@@ -118,7 +118,7 @@ class PairGame extends AbstractGame {
         dataSource.querySelectorAll(".carte").forEach(cardDiv => {
             const card = new Card(cardDiv);
             this.cards.push(card);
-            card.setLetter = card.letter;
+            card.letter = card.letter;
         });
     }
 
