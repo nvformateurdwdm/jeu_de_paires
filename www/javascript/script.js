@@ -345,9 +345,16 @@ function refreshRemainingCouples(){
     
 }
 
+function pairGameInitHandler(evt) {
+    refreshRemainingCouples();
+    const stateDiv = document.querySelector("#state");
+    stateDiv.innerHTML = '';
+}
+
 const pairGame = new PairGame();
 pairGame.addEventListener(PairGameEventNames.GOOD, pairGameGoodWrongHandler);
 pairGame.addEventListener(PairGameEventNames.WRONG, pairGameGoodWrongHandler);
 pairGame.addEventListener(PairGameEventNames.WIN, pairGameWinHandler);
+pairGame.addEventListener(AbstractGameEventNames.INIT, pairGameInitHandler);
 pairGame.init(document);
 
