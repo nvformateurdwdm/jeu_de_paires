@@ -358,4 +358,3 @@ pairGame.addEventListener(PairGameEventNames.WRONG, pairGameGoodWrongHandler);
 pairGame.addEventListener(PairGameEventNames.WIN, pairGameWinHandler);
 pairGame.addEventListener(AbstractGameEventNames.INIT, pairGameInitHandler);
 pairGame.init(document);
-
