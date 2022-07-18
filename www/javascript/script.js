@@ -114,7 +114,7 @@ class Card extends AbstractButton {
     }
 
     rotate(){
-
+        this.face.style.transform = "rotateY(180deg)";
     }
 
     buttonClickHandler(evt){
@@ -225,3 +225,4 @@ class PairGame extends AbstractGame {
 
 const pairGame = new PairGame();
 pairGame.init(document);
+5
