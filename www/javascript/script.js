@@ -191,7 +191,7 @@ class PairGame extends AbstractGame {
             }
             if (this.allCouples.length == 0) {
                 console.log("Partie terminée");
-
+                this.increasePoints();
                 this.dispatchEvent(new AbstractGameEvent(AbstractGameEventNames.WIN));
             } else {
                 console.log("WIN");
@@ -252,16 +252,21 @@ class PairGame extends AbstractGame {
     }
 }
 
-// var cardDiv = document.querySelectorAll(".carte")[1];
-// console.log(cardDiv);
-// const card = new Card(cardDiv);
+function refreshRemainingCouples() {
+    const couplesDiv = document.querySelector("#couples");
+    couplesDiv.textContent = "Nombre de couples restant : " + pairGame.remainingCouples;
+    console.log(pairGame.remainingCouples);
 
-// card.activate(true);
+}
 
+function refreshNbPoints(){
+    const nbPointsDiv = document.querySelector("#nbPoints");
+    nbPointsDiv.textContent = "Nombre de points : " + pairGame.points;
+}
 
 function pairGameWinHandler(evt) {
     console.log("pairGameWinHandler", evt);
-    
+    refreshNbPoints();
 }
 
 function pairGameGoodWrongHandler(evt) {
@@ -274,20 +279,12 @@ function pairGameGoodWrongHandler(evt) {
     }
 }
 
-function refreshRemainingCouples() {
-    const couplesDiv = document.querySelector("#couples");
-    couplesDiv.textContent = "Nombre de couples restant : " + pairGame.remainingCouples;
-    console.log(pairGame.remainingCouples);
-
-}
-
 function pairGameInitHandler(evt) {
     refreshRemainingCouples();
     const stateDiv = document.querySelector("#state");
     stateDiv.innerHTML = '';
 
-    const nbPointsDiv = document.querySelector("#nbPoints");
-    nbPointsDiv.textContent = "";
+    refreshNbPoints();
 }
 
 function pairGameFlipHandler(evt) {

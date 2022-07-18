@@ -66,6 +66,7 @@ class AbstractGame extends EventTarget {
         super();
         
         this.dataSource;
+        this.points = 0;
         console.log("Démarrage du jeu.");
     }
 
@@ -77,5 +78,15 @@ class AbstractGame extends EventTarget {
         this.dataSource = dataSource;
         this.dispatchEvent(new AbstractGameEvent(AbstractGameEventNames.INIT));
         console.log("Initialisation du jeu");
+    }
+
+    /**
+     * 
+     * @description Inscrease the number of points.
+     * 
+     */
+    increasePoints(){
+        this.points += 100;
+        console.log("increasePoints", this.points);
     }
 }
