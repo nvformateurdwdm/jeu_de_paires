@@ -74,10 +74,18 @@ class AbstractGameEvent extends CustomEvent {
 class AbstractGame extends EventTarget {
     constructor() {
         super();
+        
+        this.dataSource;
         console.log("Démarrage du jeu.");
     }
 
+    /**
+     * @description Initialize the game with its dataSource.
+     * @param {*} dataSource 
+     */
     init(dataSource) {
+        this.dataSource = dataSource;
+        this.dispatchEvent(new AbstractGameEvent(AbstractGameEventNames.INIT));
         console.log("Initialisation du jeu");
     }
 }
@@ -231,6 +239,8 @@ class PairGame extends AbstractGame {
         });
 
         this.flipCards();
+
+        super.init(dataSource);
     }
 
     /**
@@ -316,8 +326,13 @@ function pairGameGoodWrongHandler(evt){
     const stateDiv = document.querySelector("#state");
     stateDiv.innerHTML = evt.type == PairGameEventNames.GOOD ? States.good : States.wrong;
     if(evt.type == PairGameEventNames.GOOD){
-
+        refreshRemainingCouples();
     }
+}
+
+function refreshRemainingCouples(){
+    const couplesDiv = document.querySelector("#couples");
+    couplesDiv.textContent = "Nombre de couples restant : " + pairGame.remainingCouples;
 }
 
 const pairGame = new PairGame();
