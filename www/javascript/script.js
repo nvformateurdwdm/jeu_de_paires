@@ -11,7 +11,7 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const isDebug = urlParams.get('debug');
 
-const Letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+const card = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
 
 const States = {
     good: "&#x2705;",
@@ -179,7 +179,7 @@ class PairGame extends AbstractGame {
     init(dataSource) {
         this.initCards(dataSource);
         this.initLines(dataSource);
-        Letters.forEach(letter => {
+        card.forEach(letter => {
             let couples = [];
             if (this.cards.find(e => e == letter)) {
                 couples.push(letter);
@@ -229,8 +229,15 @@ class PairGame extends AbstractGame {
     }
 
     flipCards() {
-
-}
+        for (let i = 0; i < this.cards.length; i++) {
+            const card = cards[i];
+            card.activate(true);
+            setTimeout(() => {
+                card.activate(false);
+                card.disable(false);
+            }, Delays.FLIP);
+        }
+    }
 }
 
 // var cardDiv = document.querySelectorAll(".carte")[1];
@@ -241,4 +248,3 @@ class PairGame extends AbstractGame {
 
 const pairGame = new PairGame();
 pairGame.init(document);
-5
