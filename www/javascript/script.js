@@ -35,7 +35,7 @@ class AbstractButton extends EventTarget {
         // https://medium.com/@bigcatplichta/javascript-use-bind-to-dynamically-add-and-remove-event-listeners-d6b443877a73
         this.boundEventHandler = this.buttonClickHandler.bind(this);
         this.isDisable = false;
-        console.log("buttonDiv", this.buttonDiv);
+        // console.log("buttonDiv", this.buttonDiv);
     }
 
     /**
@@ -174,11 +174,16 @@ class PairGame extends AbstractGame {
         
         Letters.forEach(letter => {
             let couples = [];
+            
             if (this.cards.find(e => e == letter)) {
+                console.log("toto", e);
+                
                 couples.push(e);
             }
             this.allCouples.push(couples);
         });
+
+        this.flipCards();
     }
 
     /**
@@ -236,14 +241,13 @@ class PairGame extends AbstractGame {
     }
 
     flipCards() {
-        for (let i = 0; i < this.cards.length; i++) {
-            const card = cards[i];
+        for (const card of this.cards) {
             card.activate(true);
             setTimeout(() => {
                 card.activate(false);
                 card.disable(false);
             }, Delays.FLIP);
-        }
+        };
     }
 }
 
