@@ -6,22 +6,27 @@ const EventNames = {
     MOUSE_OUT: "mouseout"
     // etc
 };
-
+// -------------- MODE DEBUG --------------------
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const isDebug = urlParams.get('debug');
-
-const Letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
-const States = {
-    good: "&#x2705;",
-    wrong: "&#x274C;"
-};
-
 let debug = (window.location.protocol == "file:") || (window.location.hostname == "127.0.0.1") || (isDebug == "true");
 if (isDebug == "false") {
     debug = false;
 }
 console.log("debug", debug);
+// -------------- MODE DEBUG --------------------
+
+const Letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+
+const states = {
+    good: "&#x2705;",
+    wrong: "&#x274C;"
+};
+
+const Delays = {
+    FLIP: 1500
+};
 
 class AbstractButton extends EventTarget {
     constructor(buttonDiv) {
@@ -31,7 +36,7 @@ class AbstractButton extends EventTarget {
         // https://medium.com/@bigcatplichta/javascript-use-bind-to-dynamically-add-and-remove-event-listeners-d6b443877a73
         this.boundEventHandler = this.buttonClickHandler.bind(this);
         this.isDisable = false;
-        console.log("buttonDiv", this.buttonDiv);
+        // console.log("buttonDiv", this.buttonDiv);
     }
 
     /**
@@ -53,8 +58,22 @@ class AbstractButton extends EventTarget {
     }
 
 };
-class AbstractGame {
+
+const AbstractGameEventNames = {
+    INIT: "init",
+    WIN: "win",
+    LOSE: "lose"
+};
+
+class AbstractGameEvent extends CustomEvent {
+    constructor(type) {
+        super(type);
+    }
+};
+
+class AbstractGame extends EventTarget {
     constructor() {
+        super();
         console.log("Démarrage du jeu.");
     }
 
@@ -69,7 +88,7 @@ class Line {
     }
 }
 
-const CardEventsName = {
+const CardEventNames = {
     CARD_CLICK: "card_click"
     // etc
 };
@@ -119,7 +138,19 @@ class Card extends AbstractButton {
 
     buttonClickHandler(evt) {
         super.buttonClickHandler(evt);
-        this.dispatchEvent(new CardEvent(CardEventsName.CARD_CLICK));
+        this.dispatchEvent(new CardEvent(CardEventNames.CARD_CLICK));
+    }
+}
+
+const PairGameEventNames = {
+    GOOD: "good",
+    WRONG: "wrong",
+    FLIP: "flip"
+};
+
+class PairGameEvent extends AbstractGameEvent{
+    constructor(type){
+        super(type);
     }
 }
 
@@ -134,6 +165,10 @@ class PairGame extends AbstractGame {
         this.allCouples = [];
     }
 
+    get remainingCouples(){
+        return this.allCouples.length;
+    }
+
     initLines(dataSource) {
         for (const lineDiv of dataSource.querySelectorAll(".ligne")) {
             const line = new Line(lineDiv);
@@ -144,11 +179,17 @@ class PairGame extends AbstractGame {
     initCards(dataSource) {
         dataSource.querySelectorAll(".carte").forEach(cardDiv => {
             const card = new Card(cardDiv);
-            card.addEventListener(CardEventsName.CARD_CLICK, function () {
+            card.addEventListener(CardEventNames.CARD_CLICK, function () {
                 this.cardClickHandler(card);
             }.bind(this));
             card.disable(false);
             card.letter = card.letter;
+
+            if(debug){
+                card.back.textContent = card.letter;
+                console.log("tetet", card.back.textContent);
+            }
+
             this.cards.push(card);
         });
     }
@@ -170,16 +211,26 @@ class PairGame extends AbstractGame {
         
         Letters.forEach(letter => {
             let couples = [];
-            // this.cards.forEach(card => {
-
-            // });
-
+            
             // if (this.cards.find(e => e == letter)) {
-            //     couples.push();
-            //     console.log();
+            //     console.log("toto", e);
+                
+            //     couples.push(e);
             // }
+
+            for (const card of this.cards) {
+                if(card.letter == letter){
+                    card.rotate();
+                    couples.push(card);
+                }
+            }
+            
+
+
             this.allCouples.push(couples);
         });
+
+        this.flipCards();
     }
 
     /**
@@ -196,8 +247,8 @@ class PairGame extends AbstractGame {
                 if (first.letter == this.firstCard.letter) {
                     this.allCouples.splice(this.allCouples.indexOf(couple), 1);
                     console.log("Longeur du tableau allCouples", this.allCouples.length);
-                    break;
                 }
+                break;
             }
             if (this.allCouples.length == 0) {
                 console.log("Partie terminée");
@@ -205,20 +256,27 @@ class PairGame extends AbstractGame {
             this.firstCard = null;
             this.secondCard = null;
             this.locked = false;
+
+            this.dispatchEvent(new PairGameEvent(PairGameEventNames.GOOD));
         } else {
-            this.firstCard.activate(false);
-            this.secondCard.activate(false);
-            this.firstCard.disable(false);
-            this.secondCard.disable(false);
-            this.firstCard = null;
-            this.secondCard = null;
-            this.locked = false;
+            console.log("WRONG");
+            
+            this.dispatchEvent(new PairGameEvent(PairGameEventNames.WRONG));
+            setTimeout(() => {
+                this.firstCard.activate(false);
+                this.secondCard.activate(false);
+                this.firstCard.disable(false);
+                this.secondCard.disable(false);
+                this.firstCard = null;
+                this.secondCard = null;
+                this.locked = false;
+            }, Delays.FLIP);
         }
 
     }
 
     cardClickHandler(card) {
-        console.log("cardClickHandler", card);
+        // console.log("cardClickHandler", card);
 
         if (this.locked) {
             return;
@@ -237,7 +295,13 @@ class PairGame extends AbstractGame {
     }
 
     flipCards() {
-
+        for (const card of this.cards) {
+            card.activate(true);
+            setTimeout(() => {
+                card.activate(false);
+                card.disable(false);
+            }, Delays.FLIP);
+        };
     }
 }
 
@@ -247,5 +311,16 @@ class PairGame extends AbstractGame {
 
 // card.activate(true);
 
+function pairGameGoodWrongHandler(evt){
+    console.log("pairGameGoodWrongHandler", evt);
+    const stateDiv = document.querySelector("#state");
+    stateDiv.innerHTML = evt.type == PairGameEventNames.GOOD ? states.good : states.wrong;
+    if(evt.type == PairGameEventNames.GOOD){
+
+    }
+}
+
 const pairGame = new PairGame();
+pairGame.addEventListener(PairGameEventNames.GOOD, pairGameGoodWrongHandler);
+pairGame.addEventListener(PairGameEventNames.WRONG, pairGameGoodWrongHandler);
 pairGame.init(document);
