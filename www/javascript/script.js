@@ -114,7 +114,7 @@ class Card extends AbstractButton {
     }
 
     rotate() {
-
+        this.face.style.transform = "rotateY(180deg)";
     }
 
     buttonClickHandler(evt) {
