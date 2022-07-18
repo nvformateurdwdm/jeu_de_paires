@@ -17,6 +17,10 @@ const States = {
     wrong: "&#x274C;"
 };
 
+const Delays = {
+    FLIP: 1500
+};
+
 let debug = (window.location.protocol == "file:") || (window.location.hostname == "127.0.0.1") || (isDebug == "true");
 if (isDebug == "false") {
     debug = false;
@@ -114,7 +118,7 @@ class Card extends AbstractButton {
     }
 
     rotate() {
-
+        this.face.style.transform = "rotateY(180deg)";
     }
 
     buttonClickHandler(evt) {
@@ -183,7 +187,6 @@ class PairGame extends AbstractGame {
     checkCouple() {
         this.locked = true;
         if (this.isCardsMatch()) {
-            // .splice(.indexOf());
             console.log(this.allCouples);
             for (const couple of this.allCouples) {
                 const first = couple[0];
@@ -233,7 +236,14 @@ class PairGame extends AbstractGame {
     }
 
     flipCards() {
-
+        for (let i = 0; i < this.cards.length; i++) {
+            const card = cards[i];
+            card.activate(true);
+            setTimeout(() => {
+                card.activate(false);
+                card.disable(false);
+            }, Delays.FLIP);
+        }
     }
 }
 
