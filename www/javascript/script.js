@@ -100,7 +100,7 @@ class Card extends AbstractButton {
     get back() {
         return this.buttonDiv.querySelector(".arriere");
     }
-
+    
     get doubleFace(){
         return this.buttonDiv.querySelector(".double-face");
     }
@@ -154,7 +154,7 @@ class PairGame extends AbstractGame {
     }
 
     isCardsMatch() {
-        return this.firstCard == this.secondCard;
+        return this.firstCard.letter == this.secondCard.letter;
     }
 
     
