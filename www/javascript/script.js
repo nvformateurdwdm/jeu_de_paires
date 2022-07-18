@@ -100,7 +100,7 @@ class Card extends AbstractButton {
     get back() {
         return this.buttonDiv.querySelector(".arriere");
     }
-    
+
     get doubleFace(){
         return this.buttonDiv.querySelector(".double-face");
     }
@@ -151,12 +151,12 @@ class PairGame extends AbstractGame {
             card.letter = card.letter;
             this.cards.push(card);
         });
-    }
-
+    }      
+    
     isCardsMatch() {
         return this.firstCard.letter == this.secondCard.letter;
     }
-
+ 
     
     /**
      * @description La méthode init charge les données dans la l'élément html contenu dans dataSource. Elle appelle les méthodes d'initialisation
@@ -214,7 +214,7 @@ class PairGame extends AbstractGame {
 
     flipCards(){
 
-    }
+}
 }
 
 // var cardDiv = document.querySelectorAll(".carte")[1];
