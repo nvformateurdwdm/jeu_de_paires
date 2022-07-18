@@ -275,21 +275,27 @@ function pairGameGoodWrongHandler(evt) {
     console.log("evt.type", evt.type);
     if (evt.type == PairGameEventNames.GOOD) {
         refreshRemainingCouples();
+        setTimeout(() => {
+            emptyState();
+        }, 2000);
     }
 }
 
 function pairGameInitHandler(evt) {
-    const stateDiv = document.querySelector("#state");
-    stateDiv.innerHTML = '';
+    emptyState();
     refreshRemainingCouples();
     refreshNbPoints();
 
-    // On remet la div info en bas
+    // On remet la div infos en bas
     const infosDiv = document.querySelector("#infos");
     infosDiv.parentNode.appendChild(infosDiv);
 }
 
 function pairGameFlipHandler(evt) {
+    emptyState();
+}
+
+function emptyState(){
     const stateDiv = document.querySelector("#state");
     stateDiv.innerHTML = '';
 }
