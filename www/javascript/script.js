@@ -19,7 +19,7 @@ console.log("debug", debug);
 
 const Letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
 
-const States = {
+const states = {
     good: "&#x2705;",
     wrong: "&#x274C;"
 };
@@ -314,7 +314,7 @@ class PairGame extends AbstractGame {
 function pairGameGoodWrongHandler(evt){
     console.log("pairGameGoodWrongHandler", evt);
     const stateDiv = document.querySelector("#state");
-    stateDiv.innerHTML = evt.type == PairGameEventNames.GOOD ? States.good : States.wrong;
+    stateDiv.innerHTML = evt.type == PairGameEventNames.GOOD ? states.good : states.wrong;
     if(evt.type == PairGameEventNames.GOOD){
 
     }
