@@ -93,7 +93,7 @@ class PairGame extends AbstractGame {
 
         this.firstCard;
         this.secondCard;
-        this.line = [];
+        this.lines = [];
         this.cards = [];
         this.allCouples = [];
     }
@@ -102,37 +102,7 @@ class PairGame extends AbstractGame {
         return this.allCouples.length;
     }
 
-    initLines(dataSource) {
-        for (const lineDiv of dataSource.querySelectorAll(".ligne")) {
-            const line = new Line(lineDiv);
-            this.line.push(line);
-        }
-    };
-
-    initCards(dataSource) {
-        dataSource.querySelectorAll(".carte").forEach(cardDiv => {
-            const card = new Card(cardDiv);
-            card.addEventListener(CardEventNames.CARD_CLICK, function () {
-                this.cardClickHandler(card);
-            }.bind(this));
-            card.disable(false);
-            card.letter = card.letter;
-
-            if (debug) {
-                card.back.textContent = card.letter;
-                // console.log("tetet", card.back.textContent);
-            }
-
-            this.cards.push(card);
-        });
-    }
-
-    isCardsMatch() {
-        return this.firstCard.letter == this.secondCard.letter;
-    }
-
-
-    /**
+        /**
      * @description La méthode init charge les données dans la l'élément html contenu dans dataSource. Elle appelle les méthodes d'initialisation
      * @param {*} dataSource 
      */
@@ -170,6 +140,37 @@ class PairGame extends AbstractGame {
         this.flipCards();
 
         super.init(dataSource);
+    }
+
+    initLines(dataSource) {
+        this.lines.splice(0);
+        for (const lineDiv of dataSource.querySelectorAll(".ligne")) {
+            const line = new Line(lineDiv);
+            this.lines.push(line);
+        }
+    };
+
+    initCards(dataSource) {
+        this.cards.splice(0);
+        dataSource.querySelectorAll(".carte").forEach(cardDiv => {
+            const card = new Card(cardDiv);
+            card.addEventListener(CardEventNames.CARD_CLICK, function () {
+                this.cardClickHandler(card);
+            }.bind(this));
+            card.disable(false);
+            card.letter = card.letter;
+
+            if (debug) {
+                card.back.textContent = card.letter;
+                // console.log("tetet", card.back.textContent);
+            }
+
+            this.cards.push(card);
+        });
+    }
+
+    isCardsMatch() {
+        return this.firstCard.letter == this.secondCard.letter;
     }
 
     /**
@@ -267,6 +268,7 @@ function refreshNbPoints(){
 function pairGameWinHandler(evt) {
     console.log("pairGameWinHandler", evt);
     refreshNbPoints();
+    pairGame.init(document);
 }
 
 function pairGameGoodWrongHandler(evt) {
