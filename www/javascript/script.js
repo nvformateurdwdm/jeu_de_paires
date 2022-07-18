@@ -174,14 +174,9 @@ class PairGame extends AbstractGame {
         
         Letters.forEach(letter => {
             let couples = [];
-            // this.cards.forEach(card => {
-
-            // });
-
-            // if (this.cards.find(e => e == letter)) {
-            //     couples.push();
-            //     console.log();
-            // }
+            if (this.cards.find(e => e == letter)) {
+                couples.push(e);
+            }
             this.allCouples.push(couples);
         });
     }
