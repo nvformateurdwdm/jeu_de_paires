@@ -23,25 +23,36 @@ if (isDebug == "false") {
 }
 console.log("debug", debug);
 
-class AbstractButton {
-    constructor(buttonDiv) {
+class AbstractButton extends EventTarget{
+    constructor(buttonDiv){
+        super();
+
         this.buttonDiv = buttonDiv;
+        // https://medium.com/@bigcatplichta/javascript-use-bind-to-dynamically-add-and-remove-event-listeners-d6b443877a73
+        this.boundEventHandler = this.buttonClickHandler.bind(this);
+        this.isDisable = false;
+        console.log("buttonDiv", this.buttonDiv);
     }
 
+    /**
+     * @description Disable or not the button.
+     * @param {Boolean} bool 
+     */
     disable(bool = true) {
-        this.buttonDiv.disabled = bool;
-        this.buttonDiv.className = bool ? "disabled" : "buttonNextPrevious";
+        this.isDisable = bool;
+        this.buttonDiv.style.cursor = bool ? "auto" : "pointer";
         if (bool) {
-            this.buttonDiv.removeEventListener(EventNames.CLICK, buttonClickHandler);
+            this.buttonDiv.removeEventListener(EventNames.CLICK, this.boundEventHandler);
         } else {
-            this.buttonDiv.addEventListener(EventNames.CLICK, buttonClickHandler);
+            this.buttonDiv.addEventListener(EventNames.CLICK, this.boundEventHandler)
         }
     }
 
-    buttonClickHandler() {
-        console.log(this.buttonDiv);
+    buttonClickHandler(){
+        console.log("AbstractButton clicked.", this);
     }
-}
+    
+};
 class AbstractGame {
     constructor() {
         console.log("Démarrage du jeu.");
@@ -58,13 +69,24 @@ class Line{
     }
 }
 
+const CardEventsName = {
+    CARD_CLICK: "card_click"
+    // etc
+};
+
+class CardEvent extends CustomEvent{
+    constructor(type){
+        super(type);
+    }
+}
+
 class Card extends AbstractButton {
     constructor(buttonDiv) {
         super(buttonDiv);
     }
 
     get letter() {
-        return buttonDiv.getAttribute("data-attr");
+        return this.buttonDiv.getAttribute("data-attr");
     }
 
     set letter(value) {
@@ -72,15 +94,15 @@ class Card extends AbstractButton {
     }
 
     get face() {
-        return buttonDiv.querySelector("face");
+        return this.buttonDiv.querySelector(".face");
     }
 
     get back() {
-        return buttonDiv.querySelector("arriere");
+        return this.buttonDiv.querySelector(".arriere");
     }
 
     get doubleFace(){
-        return buttonDiv.querySelector("double-face");
+        return this.buttonDiv.querySelector(".double-face");
     }
 
     activate(flag) {
@@ -94,16 +116,22 @@ class Card extends AbstractButton {
     rotate(){
 
     }
+
+    buttonClickHandler(evt){
+        super.buttonClickHandler(evt);
+        this.dispatchEvent(new CardEvent(CardEventsName.CARD_CLICK));
+    }
 }
 
 class PairGame extends AbstractGame {
     constructor() {
         super();
 
-        this.firstCard = firstCard;
-        this.secondCard = secondCard;
+        this.firstCard;
+        this.secondCard;
         this.line = [];
         this.cards = [];
+        this.allCouples = [];
     }
 
     initLines(dataSource){
@@ -111,14 +139,17 @@ class PairGame extends AbstractGame {
             const line = new Line(lineDiv);
             this.line.push(line);
         }
-
     };
 
     initCards(dataSource){
         dataSource.querySelectorAll(".carte").forEach(cardDiv => {
             const card = new Card(cardDiv);
-            this.cards.push(card);
+            card.addEventListener(CardEventsName.CARD_CLICK, function () {
+                this.cardClickHandler(card);
+            }.bind(this));
+            card.disable(false);
             card.letter = card.letter;
+            this.cards.push(card);
         });
     }
 
@@ -132,15 +163,15 @@ class PairGame extends AbstractGame {
      * @param {*} dataSource 
      */
     init(dataSource) {
-        initLines(dataSource);
-        initCards(dataSource);
+        this.initCards(dataSource);
+        this.initLines(dataSource);
         Letters.forEach(letter => {
-            couples = [];
-            if (cards.find(e => e == letter)) {
-                couples.push(card);
+            let couples = [];
+            if (this.cards.find(e => e == letter)) {
+                couples.push(letter);
             }
+            this.allCouples.push(couples);
         });
-        allCouples.push(couples);
     }
 
     /**
@@ -163,6 +194,8 @@ class PairGame extends AbstractGame {
     }
 
     cardClickHandler(card) {
+        console.log("cardClickHandler", card);
+        
         if (this.locked) {
             return;
         }
@@ -184,11 +217,11 @@ class PairGame extends AbstractGame {
     }
 }
 
-var cardDiv = document.querySelectorAll(".carte")[1];
-console.log(cardDiv);
-const card = new Card(cardDiv);
+// var cardDiv = document.querySelectorAll(".carte")[1];
+// console.log(cardDiv);
+// const card = new Card(cardDiv);
 
-card.activate(true);
+// card.activate(true);
 
 const pairGame = new PairGame();
-// pairGame.init();
+pairGame.init(document);
