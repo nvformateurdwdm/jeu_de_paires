@@ -12,9 +12,14 @@ const urlParams = new URLSearchParams(queryString);
 const isDebug = urlParams.get('debug');
 
 const Letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+
 const States = {
     good: "&#x2705;",
     wrong: "&#x274C;"
+};
+
+const Delays = {
+    FLIP: 1500
 };
 
 let debug = (window.location.protocol == "file:") || (window.location.hostname == "127.0.0.1") || (isDebug == "true");
@@ -23,8 +28,8 @@ if (isDebug == "false") {
 }
 console.log("debug", debug);
 
-class AbstractButton extends EventTarget{
-    constructor(buttonDiv){
+class AbstractButton extends EventTarget {
+    constructor(buttonDiv) {
         super();
 
         this.buttonDiv = buttonDiv;
@@ -48,10 +53,10 @@ class AbstractButton extends EventTarget{
         }
     }
 
-    buttonClickHandler(){
+    buttonClickHandler() {
         console.log("AbstractButton clicked.", this);
     }
-    
+
 };
 class AbstractGame {
     constructor() {
@@ -63,8 +68,8 @@ class AbstractGame {
     }
 }
 
-class Line{
-    constructor(dataSource){
+class Line {
+    constructor(dataSource) {
         this.dataSource = dataSource;
     }
 }
@@ -74,8 +79,8 @@ const CardEventsName = {
     // etc
 };
 
-class CardEvent extends CustomEvent{
-    constructor(type){
+class CardEvent extends CustomEvent {
+    constructor(type) {
         super(type);
     }
 }
@@ -100,15 +105,15 @@ class Card extends AbstractButton {
     get back() {
         return this.buttonDiv.querySelector(".arriere");
     }
-    
-    get doubleFace(){
+
+    get doubleFace() {
         return this.buttonDiv.querySelector(".double-face");
     }
 
     activate(flag) {
         if (flag) {
             this.doubleFace.classList.toggle("active");
-        }else{
+        } else {
             this.doubleFace.classList.remove("active");
         }
     }
@@ -117,7 +122,7 @@ class Card extends AbstractButton {
         this.face.style.transform = "rotateY(180deg)";
     }
 
-    buttonClickHandler(evt){
+    buttonClickHandler(evt) {
         super.buttonClickHandler(evt);
         this.dispatchEvent(new CardEvent(CardEventsName.CARD_CLICK));
     }
@@ -134,14 +139,14 @@ class PairGame extends AbstractGame {
         this.allCouples = [];
     }
 
-    initLines(dataSource){
+    initLines(dataSource) {
         for (const lineDiv of dataSource.querySelectorAll(".ligne")) {
             const line = new Line(lineDiv);
             this.line.push(line);
         }
     };
 
-    initCards(dataSource){
+    initCards(dataSource) {
         dataSource.querySelectorAll(".carte").forEach(cardDiv => {
             const card = new Card(cardDiv);
             card.addEventListener(CardEventsName.CARD_CLICK, function () {
@@ -157,7 +162,7 @@ class PairGame extends AbstractGame {
         return this.firstCard.letter == this.secondCard.letter;
     }
 
-    
+
     /**
      * @description La méthode init charge les données dans la l'élément html contenu dans dataSource. Elle appelle les méthodes d'initialisation
      * @param {*} dataSource 
@@ -182,37 +187,39 @@ class PairGame extends AbstractGame {
         if (this.isCardsMatch()) {
             // .splice(.indexOf());
         } else {
-            this.firstCard.activate(false);
-            this.secondCard.activate(false);
-            this.firstCard.disable(false);
-            this.secondCard.disable(false);
-            this.firstCard = null;
-            this.secondCard = null;
-            this.locked = false;
+            setTimeout(() => {
+                this.firstCard.activate(false);
+                this.secondCard.activate(false);
+                this.firstCard.disable(false);
+                this.secondCard.disable(false);
+                this.firstCard = null;
+                this.secondCard = null;
+                this.locked = false;
+            }, Delays.FLIP);
         }
 
     }
 
     cardClickHandler(card) {
         console.log("cardClickHandler", card);
-        
+
         if (this.locked) {
             return;
         }
         card.activate(true);
-        if(!this.firstCard){
+        if (!this.firstCard) {
             this.firstCard = card;
             this.firstCard.disable(true);
-        }else{
+        } else {
             this.secondCard = card;
             this.secondCard.disable(true);
         }
-        if(this.firstCard && this.secondCard){
+        if (this.firstCard && this.secondCard) {
             this.checkCouple();
         }
     }
 
-    flipCards(){
+    flipCards() {
 
     }
 }
