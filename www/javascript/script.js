@@ -19,7 +19,7 @@ console.log("debug", debug);
 
 const Letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
 
-const States = {
+const states = {
     good: "&#x2705;",
     wrong: "&#x274C;"
 };
@@ -195,7 +195,7 @@ class PairGame extends AbstractGame {
 
             if(debug){
                 card.back.textContent = card.letter;
-                console.log("tetet", card.back.textContent);
+                // console.log("tetet", card.back.textContent);
             }
 
             this.cards.push(card);
@@ -215,16 +215,10 @@ class PairGame extends AbstractGame {
         // console.warn("TOTO",dataSource);
         this.initCards(dataSource);
         this.initLines(dataSource);
-        console.log("ALEX", this.cards);
+        console.log("ALEX - this.cards :", this.cards);
         
         Letters.forEach(letter => {
             let couples = [];
-            
-            // if (this.cards.find(e => e == letter)) {
-            //     console.log("toto", e);
-                
-            //     couples.push(e);
-            // }
 
             for (const card of this.cards) {
                 if(card.letter == letter){
@@ -233,10 +227,11 @@ class PairGame extends AbstractGame {
                 }
             }
             
-
-
-            this.allCouples.push(couples);
+            if (couples.length > 0) {
+                this.allCouples.push(couples);   
+            }
         });
+        console.log("ALEX - this.allCouples :", this.allCouples);
 
         this.flipCards();
 
@@ -249,7 +244,7 @@ class PairGame extends AbstractGame {
     checkCouple() {
         this.locked = true;
         if (this.isCardsMatch()) {
-            console.log(this.allCouples);
+            // console.log(this.allCouples);
             for (const couple of this.allCouples) {
                 const first = couple[0];
                 console.log("Log first",first);
@@ -324,7 +319,7 @@ class PairGame extends AbstractGame {
 function pairGameGoodWrongHandler(evt){
     console.log("pairGameGoodWrongHandler", evt);
     const stateDiv = document.querySelector("#state");
-    stateDiv.innerHTML = evt.type == PairGameEventNames.GOOD ? States.good : States.wrong;
+    stateDiv.innerHTML = evt.type == PairGameEventNames.GOOD ? states.good : states.wrong;
     if(evt.type == PairGameEventNames.GOOD){
         refreshRemainingCouples();
     }
