@@ -102,8 +102,8 @@ class PairGame extends AbstractGame {
      */
     init(dataSource) {
         // console.warn("TOTO",dataSource);
-        this.initCards(dataSource);
         this.initLines(dataSource);
+        this.initCards(dataSource);
         console.log("ALEX - this.cards :", this.cards);
 
         Letters.forEach(letter => {
@@ -141,6 +141,11 @@ class PairGame extends AbstractGame {
         for (const lineDiv of dataSource.querySelectorAll(".ligne")) {
             const line = new Line(lineDiv);
             this.lines.push(line);
+        }
+        shuffleArray(this.lines);
+        // console.log(dataSource.querySelector("body"));
+        for (const line of this.lines) {
+            line.dataSource.parentNode.appendChild(line.dataSource);
         }
     };
 
@@ -278,6 +283,10 @@ function pairGameInitHandler(evt) {
     stateDiv.innerHTML = '';
     refreshRemainingCouples();
     refreshNbPoints();
+
+    // On remet la div info en bas
+    const infosDiv = document.querySelector("#infos");
+    infosDiv.parentNode.appendChild(infosDiv);
 }
 
 function pairGameFlipHandler(evt) {
