@@ -6,10 +6,16 @@ const EventNames = {
     MOUSE_OUT: "mouseout"
     // etc
 };
-
+// -------------- MODE DEBUG --------------------
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const isDebug = urlParams.get('debug');
+let debug = (window.location.protocol == "file:") || (window.location.hostname == "127.0.0.1") || (isDebug == "true");
+if (isDebug == "false") {
+    debug = false;
+}
+console.log("debug", debug);
+// -------------- MODE DEBUG --------------------
 
 const Letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
 
@@ -21,12 +27,6 @@ const States = {
 const Delays = {
     FLIP: 1500
 };
-
-let debug = (window.location.protocol == "file:") || (window.location.hostname == "127.0.0.1") || (isDebug == "true");
-if (isDebug == "false") {
-    debug = false;
-}
-console.log("debug", debug);
 
 class AbstractButton extends EventTarget {
     constructor(buttonDiv) {
@@ -184,6 +184,12 @@ class PairGame extends AbstractGame {
             }.bind(this));
             card.disable(false);
             card.letter = card.letter;
+
+            if(debug){
+                card.back.textContent = card.letter;
+                console.log("tetet", card.back.textContent);
+            }
+
             this.cards.push(card);
         });
     }
