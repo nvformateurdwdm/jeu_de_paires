@@ -1,21 +1,4 @@
-const EventNames = {
-    MOUSE_DOWN: "mousedown",
-    MOUSE_UP: "mouseup",
-    CLICK: "click",
-    MOUSE_OVER: "mouseover",
-    MOUSE_OUT: "mouseout"
-    // etc
-};
-// -------------- MODE DEBUG --------------------
-const queryString = window.location.search;
-const urlParams = new URLSearchParams(queryString);
-const isDebug = urlParams.get('debug');
-let debug = (window.location.protocol == "file:") || (window.location.hostname == "127.0.0.1") || (isDebug == "true");
-if (isDebug == "false") {
-    debug = false;
-}
-console.log("debug", debug);
-// -------------- MODE DEBUG --------------------
+
 
 const Letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
 
@@ -28,67 +11,9 @@ const Delays = {
     FLIP: 1500
 };
 
-class AbstractButton extends EventTarget {
-    constructor(buttonDiv) {
-        super();
 
-        this.buttonDiv = buttonDiv;
-        // https://medium.com/@bigcatplichta/javascript-use-bind-to-dynamically-add-and-remove-event-listeners-d6b443877a73
-        this.boundEventHandler = this.buttonClickHandler.bind(this);
-        this.isDisable = false;
-        // console.log("buttonDiv", this.buttonDiv);
-    }
 
-    /**
-     * @description Disable or not the button.
-     * @param {Boolean} bool 
-     */
-    disable(bool = true) {
-        this.isDisable = bool;
-        this.buttonDiv.style.cursor = bool ? "auto" : "pointer";
-        if (bool) {
-            this.buttonDiv.removeEventListener(EventNames.CLICK, this.boundEventHandler);
-        } else {
-            this.buttonDiv.addEventListener(EventNames.CLICK, this.boundEventHandler)
-        }
-    }
 
-    buttonClickHandler() {
-        console.log("AbstractButton clicked.", this);
-    }
-
-};
-
-const AbstractGameEventNames = {
-    INIT: "init",
-    WIN: "win",
-    LOSE: "lose"
-};
-
-class AbstractGameEvent extends CustomEvent {
-    constructor(type) {
-        super(type);
-    }
-};
-
-class AbstractGame extends EventTarget {
-    constructor() {
-        super();
-        
-        this.dataSource;
-        console.log("Démarrage du jeu.");
-    }
-
-    /**
-     * @description Initialize the game with its dataSource.
-     * @param {*} dataSource 
-     */
-    init(dataSource) {
-        this.dataSource = dataSource;
-        this.dispatchEvent(new AbstractGameEvent(AbstractGameEventNames.INIT));
-        console.log("Initialisation du jeu");
-    }
-}
 
 class Line {
     constructor(dataSource) {
@@ -228,7 +153,16 @@ class PairGame extends AbstractGame {
             }
             
             if (couples.length > 0) {
-                this.allCouples.push(couples);   
+                if(!debug){
+                    this.allCouples.push(couples);
+                }else{
+                    if(this.allCouples.length < 2){
+                        for (const card of couples) {
+                            card.buttonDiv.style.border = "solid";
+                        }
+                        this.allCouples.push(couples);
+                    }
+                }
             }
         });
         console.log("ALEX - this.allCouples :", this.allCouples);
@@ -280,6 +214,7 @@ class PairGame extends AbstractGame {
                     this.firstCard = null;
                     this.secondCard = null;
                     this.locked = false;
+                    this.dispatchEvent(new PairGameEvent(PairGameEventNames.FLIP));
                 },
                 Delays.FLIP);
             this.dispatchEvent(new CardEvent(CardEventNames.CARD_CLICK));
@@ -350,6 +285,14 @@ function pairGameInitHandler(evt) {
     refreshRemainingCouples();
     const stateDiv = document.querySelector("#state");
     stateDiv.innerHTML = '';
+
+    const nbPointsDiv = document.querySelector("#nbPoints");
+    nbPointsDiv.textContent = "";
+}
+
+function pairGameFlipHandler(evt){
+    const stateDiv = document.querySelector("#state");
+    stateDiv.innerHTML = '';
 }
 
 const pairGame = new PairGame();
@@ -357,4 +300,5 @@ pairGame.addEventListener(PairGameEventNames.GOOD, pairGameGoodWrongHandler);
 pairGame.addEventListener(PairGameEventNames.WRONG, pairGameGoodWrongHandler);
 pairGame.addEventListener(PairGameEventNames.WIN, pairGameWinHandler);
 pairGame.addEventListener(AbstractGameEventNames.INIT, pairGameInitHandler);
+pairGame.addEventListener(PairGameEventNames.FLIP, pairGameFlipHandler);
 pairGame.init(document);
