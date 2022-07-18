@@ -183,23 +183,7 @@ class PairGame extends AbstractGame {
     checkCouple() {
         this.locked = true;
         if (this.isCardsMatch()) {
-            console.log(this.allCouples);
-            for (const couple of this.allCouples) {
-                const first = couple[0];
-                console.log("Log first",first);
-
-                if (first.letter == this.firstCard.letter) {
-                    this.allCouples.splice(this.allCouples.indexOf(couple), 1);
-                    console.log("Longeur du tableau allCouples", this.allCouples.length);
-                    break;
-                }
-            }
-            if (this.allCouples.length == 0) {
-                console.log("Partie terminée");
-            }
-            this.firstCard = null;
-            this.secondCard = null;
-            this.locked = false;
+            // .splice(.indexOf());
         } else {
             this.firstCard.activate(false);
             this.secondCard.activate(false);
