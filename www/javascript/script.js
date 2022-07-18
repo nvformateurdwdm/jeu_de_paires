@@ -141,7 +141,7 @@ class PairGame extends AbstractGame {
         this.initCards(dataSource);
         this.initLines(dataSource);
         console.log("ALEX - this.cards :", this.cards);
-        
+
         Letters.forEach(letter => {
             let couples = [];
 
@@ -151,12 +151,12 @@ class PairGame extends AbstractGame {
                     couples.push(card);
                 }
             }
-            
+
             if (couples.length > 0) {
-                if(!debug){
+                if (!debug) {
                     this.allCouples.push(couples);
-                }else{
-                    if(this.allCouples.length < 2){
+                } else {
+                    if (this.allCouples.length < 2) {
                         for (const card of couples) {
                             card.buttonDiv.style.border = "solid";
                         }
@@ -181,7 +181,7 @@ class PairGame extends AbstractGame {
             // console.log(this.allCouples);
             for (const couple of this.allCouples) {
                 const first = couple[0];
-                console.log("Log first",first.letter, "this.firstCard.letter", this.firstCard.letter);
+                console.log("Log first", first.letter, "this.firstCard.letter", this.firstCard.letter);
 
                 if (first.letter == this.firstCard.letter) {
                     this.allCouples.splice(this.allCouples.indexOf(couple), 1);
@@ -192,10 +192,10 @@ class PairGame extends AbstractGame {
             if (this.allCouples.length == 0) {
                 console.log("Partie terminée");
 
-                this.dispatchEvent(newDispatchEvent(newDispatchEventNames.WIN));
-            }  else {
-                    console.log("WIN");
-            }  
+                this.dispatchEvent(new AbstractGameEvent(AbstractGameEventNames.WIN));
+            } else {
+                console.log("WIN");
+            }
 
             this.firstCard = null;
             this.secondCard = null;
@@ -207,15 +207,15 @@ class PairGame extends AbstractGame {
 
             this.dispatchEvent(new PairGameEvent(PairGameEventNames.WRONG));
             setTimeout(() => {
-                    this.firstCard.activate(false);
-                    this.secondCard.activate(false);
-                    this.firstCard.disable(false);
-                    this.secondCard.disable(false);
-                    this.firstCard = null;
-                    this.secondCard = null;
-                    this.locked = false;
-                    this.dispatchEvent(new PairGameEvent(PairGameEventNames.FLIP));
-                },
+                this.firstCard.activate(false);
+                this.secondCard.activate(false);
+                this.firstCard.disable(false);
+                this.secondCard.disable(false);
+                this.firstCard = null;
+                this.secondCard = null;
+                this.locked = false;
+                this.dispatchEvent(new PairGameEvent(PairGameEventNames.FLIP));
+            },
                 Delays.FLIP);
             this.dispatchEvent(new CardEvent(CardEventNames.CARD_CLICK));
         }
@@ -259,9 +259,9 @@ class PairGame extends AbstractGame {
 // card.activate(true);
 
 
-function pairGameWinHandler(evt){
+function pairGameWinHandler(evt) {
     console.log("pairGameWinHandler", evt);
-   
+    
 }
 
 function pairGameGoodWrongHandler(evt) {
@@ -269,16 +269,16 @@ function pairGameGoodWrongHandler(evt) {
     const stateDiv = document.querySelector("#state");
     stateDiv.innerHTML = evt.type == PairGameEventNames.GOOD ? states.good : states.wrong;
     console.log("evt.type", evt.type);
-    if(evt.type == PairGameEventNames.GOOD){
+    if (evt.type == PairGameEventNames.GOOD) {
         refreshRemainingCouples();
     }
 }
 
-function refreshRemainingCouples(){
+function refreshRemainingCouples() {
     const couplesDiv = document.querySelector("#couples");
     couplesDiv.textContent = "Nombre de couples restant : " + pairGame.remainingCouples;
     console.log(pairGame.remainingCouples);
-    
+
 }
 
 function pairGameInitHandler(evt) {
@@ -290,7 +290,7 @@ function pairGameInitHandler(evt) {
     nbPointsDiv.textContent = "";
 }
 
-function pairGameFlipHandler(evt){
+function pairGameFlipHandler(evt) {
     const stateDiv = document.querySelector("#state");
     stateDiv.innerHTML = '';
 }
@@ -298,7 +298,7 @@ function pairGameFlipHandler(evt){
 const pairGame = new PairGame();
 pairGame.addEventListener(PairGameEventNames.GOOD, pairGameGoodWrongHandler);
 pairGame.addEventListener(PairGameEventNames.WRONG, pairGameGoodWrongHandler);
-pairGame.addEventListener(PairGameEventNames.WIN, pairGameWinHandler);
+pairGame.addEventListener(AbstractGameEventNames.WIN, pairGameWinHandler);
 pairGame.addEventListener(AbstractGameEventNames.INIT, pairGameInitHandler);
 pairGame.addEventListener(PairGameEventNames.FLIP, pairGameFlipHandler);
 pairGame.init(document);
