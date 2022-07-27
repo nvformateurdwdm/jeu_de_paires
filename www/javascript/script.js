@@ -1,309 +1,182 @@
-const Letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+// https://fr.acervolima.com/differences-entre-la-programmation-procedurale-et-orientee-objet/#:~:text=La%20programmation%20proc%C3%A9durale%20peut%20%C3%AAtre,%C3%A9tapes%20de%20calcul%20%C3%A0%20effectuer.
 
-const states = {
-    GOOD: "&#x2705;",
-    WRONG: "&#x274C;"
-};
-
-const Delays = {
-    FLIP: 1500
-};
-
-class Line {
-    constructor(dataSource) {
-        this.dataSource = dataSource;
-    }
-}
-
-const CardEventNames = {
-    CARD_CLICK: "card_click"
+const EventNames = {
+    MOUSE_DOWN: "mousedown",
+    MOUSE_UP: "mouseup",
+    CLICK: "click",
+    MOUSE_OVER: "mouseover",
+    MOUSE_OUT: "mouseout",
+    INPUT: "input"
     // etc
 };
 
-class CardEvent extends CustomEvent {
-    constructor(type) {
-        super(type);
-    }
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const isDebug = urlParams.get('debug');
+let debug = (window.location.protocol == "file:") || (window.location.hostname == "127.0.0.1") || (isDebug == "true");
+if(isDebug == "false"){
+    debug = false;
+}
+console.log("debug", debug);
+
+const Letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+
+const States = {
+    GOOD: "✅",
+    WRONG: "❌"
 }
 
-class Card extends AbstractButton {
-    constructor(buttonDiv) {
-        super(buttonDiv);
+function init() {
+    shuffleArray(aLignes);
+    for (const ligne of aLignes) {
+        document.querySelector("body").insertBefore(ligne, infosDiv);
     }
 
-    get letter() {
-        return this.buttonDiv.getAttribute("data-attr");
-    }
-
-    set letter(value) {
-        this.face.textContent = value;
-    }
-
-    get face() {
-        return this.buttonDiv.querySelector(".face");
-    }
-
-    get back() {
-        return this.buttonDiv.querySelector(".arriere");
-    }
-
-    get doubleFace() {
-        return this.buttonDiv.querySelector(".double-face");
-    }
-
-    activate(flag) {
-        if (flag) {
-            this.doubleFace.classList.toggle("active");
-        } else {
-            this.doubleFace.classList.remove("active");
-        }
-    }
-
-    rotate() {
-        this.face.style.transform = "rotateY(180deg)";
-    }
-
-    buttonClickHandler(evt) {
-        super.buttonClickHandler(evt);
-        this.dispatchEvent(new CardEvent(CardEventNames.CARD_CLICK));
-    }
-}
-
-const PairGameEventNames = {
-    GOOD: "good",
-    WRONG: "wrong",
-    FLIP: "flip"
-};
-
-class PairGameEvent extends AbstractGameEvent {
-    constructor(type) {
-        super(type);
-    }
-}
-
-class PairGame extends AbstractGame {
-    constructor() {
-        super();
-
-        this.firstCard;
-        this.secondCard;
-        this.lines = [];
-        this.cards = [];
-        this.allCouples = [];
-    }
-
-    get remainingCouples() {
-        return this.allCouples.length;
-    }
-
-        /**
-     * @description La méthode init charge les données dans la l'élément html contenu dans dataSource. Elle appelle les méthodes d'initialisation
-     * @param {*} dataSource 
-     */
-    init(dataSource) {
-        // console.warn("TOTO",dataSource);
-        this.initLines(dataSource);
-        this.initCards(dataSource);
-        console.log("ALEX - this.cards :", this.cards);
-
-        Letters.forEach(letter => {
-            let couples = [];
-
-            for (const card of this.cards) {
-                if (card.letter == letter) {
-                    card.rotate();
-                    couples.push(card);
-                }
-            }
-
-            if (couples.length > 0) {
-                if (!debug) {
-                    this.allCouples.push(couples);
-                } else {
-                    if (this.allCouples.length < 2) {
-                        for (const card of couples) {
-                            card.buttonDiv.style.border = "solid";
-                        }
-                        this.allCouples.push(couples);
+    for (const letter of Letters) {
+        let couples = [];
+        for (const ligne of lignes) {
+            const cartes = ligne.querySelectorAll(".carte");
+            for (const carte of cartes) {
+                const face = carte.querySelector(".face");
+                face.style.transform = "rotateY(180deg)";
+                if (face) {
+                    if (!carte.className.includes("hidden") && face.textContent.includes(letter)) {
+                        couples.push(carte);
                     }
                 }
             }
-        });
-        console.log("ALEX - this.allCouples :", this.allCouples);
-
-        this.flipCards();
-
-        super.init(dataSource);
-    }
-
-    initLines(dataSource) {
-        this.lines.splice(0);
-        for (const lineDiv of dataSource.querySelectorAll(".ligne")) {
-            const line = new Line(lineDiv);
-            this.lines.push(line);
         }
-        shuffleArray(this.lines);
-        // console.log(dataSource.querySelector("body"));
-        for (const line of this.lines) {
-            line.dataSource.parentNode.appendChild(line.dataSource);
+        if (couples.length > 0) {
+            allCouples.push(couples);
         }
-    };
+    }
+    console.log(allCouples);
 
-    initCards(dataSource) {
-        this.cards.splice(0);
-        dataSource.querySelectorAll(".carte").forEach(cardDiv => {
-            const card = new Card(cardDiv);
-            card.addEventListener(CardEventNames.CARD_CLICK, function () {
-                this.cardClickHandler(card);
-            }.bind(this));
-            card.disable(false);
-            card.letter = card.letter;
+    returnCards();
+    refreshNbCouples();
+}
 
-            if (debug) {
-                card.back.textContent = card.letter;
-                // console.log("tetet", card.back.textContent);
-            }
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
 
-            this.cards.push(card);
-        });
+function divLigneClickHandler(evt) {
+    if (locked) {
+        return;
+    }
+    this.childNodes[1].classList.toggle("active");
+
+    if (!returnedCard) {
+        returnedCard = true;
+        firstCard = this;
+        disableCard(firstCard);
+    } else {
+        returnedCard = false;
+        secondCard = this;
     }
 
-    isCardsMatch() {
-        return this.firstCard.letter == this.secondCard.letter;
-    }
-
-    /**
-     * @description Check the cards when 2 cards are clicked.
-     */
-    checkCouple() {
-        this.locked = true;
-        if (this.isCardsMatch()) {
-            // console.log(this.allCouples);
-            for (const couple of this.allCouples) {
+    if (firstCard && secondCard) {
+        console.log("isCardsMatch", isCardsMatch());
+        locked = true;
+        disableCard(secondCard);
+        if (isCardsMatch()) {
+            stateDiv.textContent = States.GOOD;
+            for (const couple of allCouples) {
                 const first = couple[0];
-                console.log("Log first", first.letter, "this.firstCard.letter", this.firstCard.letter);
-
-                if (first.letter == this.firstCard.letter) {
-                    this.allCouples.splice(this.allCouples.indexOf(couple), 1);
-                    console.log("Longeur du tableau allCouples", this.allCouples.length);
+                if (firstCard.getAttribute("data-attr") == first.getAttribute("data-attr")) {
+                    allCouples.splice(allCouples.indexOf(couple), 1);
+                    console.log("allCouples.length", allCouples.length);
+                    if (allCouples.length == 0) {
+                        console.log("Partie terminée !");
+                        init();
+                    }
                     break;
                 }
+                console.log(couple);
             }
-            if (this.allCouples.length == 0) {
-                console.log("Partie terminée");
-                this.increasePoints();
-                this.dispatchEvent(new AbstractGameEvent(AbstractGameEventNames.WIN));
-            } else {
-                console.log("WIN");
-            }
-
-            this.firstCard = null;
-            this.secondCard = null;
-            this.locked = false;
-
-            this.dispatchEvent(new PairGameEvent(PairGameEventNames.GOOD));
+            firstCard = null;
+            secondCard = null;
+            locked = false;
+            refreshNbCouples();
         } else {
-            console.log("WRONG");
-
-            this.dispatchEvent(new PairGameEvent(PairGameEventNames.WRONG));
+            stateDiv.textContent = States.WRONG;
             setTimeout(() => {
-                this.firstCard.activate(false);
-                this.secondCard.activate(false);
-                this.firstCard.disable(false);
-                this.secondCard.disable(false);
-                this.firstCard = null;
-                this.secondCard = null;
-                this.locked = false;
-                this.dispatchEvent(new PairGameEvent(PairGameEventNames.FLIP));
-            },
-                Delays.FLIP);
-            this.dispatchEvent(new CardEvent(CardEventNames.CARD_CLICK));
-        }
+                stateDiv.textContent = "";
+                returnCard(firstCard);
+                returnCard(secondCard);
+                disableCard(firstCard, false);
+                disableCard(secondCard, false);
 
-    }
-
-    cardClickHandler(card) {
-        // console.log("cardClickHandler", card);
-
-        if (this.locked) {
-            return;
-        }
-        card.activate(true);
-        if (!this.firstCard) {
-            this.firstCard = card;
-            this.firstCard.disable(true);
-        } else {
-            this.secondCard = card;
-            this.secondCard.disable(true);
-        }
-        if (this.firstCard && this.secondCard) {
-            this.checkCouple();
+                firstCard = null;
+                secondCard = null;
+                locked = false;
+            }, 1500);
         }
     }
+}
 
-    flipCards() {
-        for (const card of this.cards) {
-            card.activate(true);
-            setTimeout(() => {
-                card.activate(false);
-                card.disable(false);
-            }, Delays.FLIP);
-        };
+function refreshNbCouples() {
+    couplesDiv.textContent = "Nombre de couples restant : " + allCouples.length;
+}
+
+function disableCard(button, bool = true) {
+    button.disabled = bool;
+    button.style.cursor = bool ? "auto" : "pointer";
+    if (bool) {
+        button.removeEventListener(EventNames.CLICK, divLigneClickHandler);
+    } else {
+        button.addEventListener(EventNames.CLICK, divLigneClickHandler);
     }
 }
 
-function refreshRemainingCouples() {
-    const couplesDiv = document.querySelector("#couples");
-    couplesDiv.textContent = "Nombre de couples restant : " + pairGame.remainingCouples + ".";
+function isCardsMatch() {
+    console.log(getFace(firstCard).textContent, getFace(secondCard).textContent);
+
+    return (getFace(firstCard).textContent == getFace(secondCard).textContent)
 }
 
-function refreshNbPoints(){
-    const nbPointsDiv = document.querySelector("#nbPoints");
-    nbPointsDiv.textContent = "Nombre de points : " + pairGame.points + ".";
+function getFace(card) {
+    return card.querySelector(".face");
 }
 
-function pairGameWinHandler(evt) {
-    console.log("pairGameWinHandler", evt);
-    refreshNbPoints();
-    pairGame.init(document);
+function returnCard(card) {
+    card.childNodes[1].classList.remove("active");
 }
 
-function pairGameGoodWrongHandler(evt) {
-    console.log("pairGameGoodWrongHandler", evt);
-    const stateDiv = document.querySelector("#state");
-    stateDiv.innerHTML = evt.type == PairGameEventNames.GOOD ? states.GOOD : states.WRONG;
-    console.log("evt.type", evt.type);
-    if (evt.type == PairGameEventNames.GOOD) {
-        refreshRemainingCouples();
+function returnCards() {
+    for (const card of cards) {
+        card.childNodes[1].classList.toggle("active");
         setTimeout(() => {
-            emptyState();
-        }, 2000);
+            returnCard(card);
+            disableCard(card, false);
+        }, 1500);
     }
 }
 
-function pairGameInitHandler(evt) {
-    emptyState();
-    refreshRemainingCouples();
-    refreshNbPoints();
+let allCouples = [];
+let firstCard;
+let secondCard;
+let returnedCard = false;
+let locked = false;
+const infosDiv = document.querySelector("#infos");
+const stateDiv = document.querySelector("#state");
+const couplesDiv = document.querySelector("#couples");
+const lignes = document.querySelectorAll(".ligne");
 
-    // On remet la div infos en bas
-    const infosDiv = document.querySelector("#infos");
-    infosDiv.parentNode.appendChild(infosDiv);
+const cards = document.querySelectorAll(".carte");
+for (const card of cards) {
+    getFace(card).textContent = card.getAttribute("data-attr");
+    if (debug) {
+        card.querySelector(".arriere").textContent = card.getAttribute("data-attr");
+    }
 }
 
-function pairGameFlipHandler(evt) {
-    emptyState();
+let aLignes = [];
+for (const ligne of lignes) {
+    aLignes.push(ligne);
 }
 
-function emptyState(){
-    const stateDiv = document.querySelector("#state");
-    stateDiv.innerHTML = '';
-}
-
-const pairGame = new PairGame();
-pairGame.addEventListener(PairGameEventNames.GOOD, pairGameGoodWrongHandler);
-pairGame.addEventListener(PairGameEventNames.WRONG, pairGameGoodWrongHandler);
-pairGame.addEventListener(AbstractGameEventNames.WIN, pairGameWinHandler);
-pairGame.addEventListener(AbstractGameEventNames.INIT, pairGameInitHandler);
-pairGame.addEventListener(PairGameEventNames.FLIP, pairGameFlipHandler);
-pairGame.init(document);
+init();
